@@ -18,6 +18,7 @@ This site is a Claude Design canvas exported to a static page.
 | `image-slot.js` | The `<image-slot>` custom element used for the photo placeholders. Unmodified. |
 | `vendor/` | React + ReactDOM 18.3.1 UMD builds. |
 | `assets/` | Logos and the mark watermark. |
+| `assets/photos/` | Site photography (~500 KB), served from this repo. |
 | `.nojekyll` | Tells Pages to serve files as-is instead of running Jekyll. |
 
 ## How it renders
@@ -58,8 +59,23 @@ Two 404s appear in devtools and are harmless:
 
 ## Photography
 
-The photos are hotlinked from `https://strikerrx.com/wp-content/uploads/...`. They will break if
-those files move. Only the logos and the watermark are stored in this repo.
+All five photos are stored in `assets/photos/` and served from this repo, so nothing depends on
+`strikerrx.com` staying up or keeping its current upload paths. They were pulled once from
+`https://strikerrx.com/wp-content/uploads/...` and keep their original filenames:
+
+| File | Used on |
+| --- | --- |
+| `Home-Header-02.jpg` | Home hero (Direction A and B) and the mobile hero |
+| `GLP-01-Mock-Up-03.jpg` | About, and the third Insights card |
+| `The-Gold-Standard-in-Patient-Safety-Striker-blog-1024x536.jpg` | First Insights card |
+| `Striker-Pharma-Compound-Pharmacy-vs-1-1024x536.jpg` | Second Insights card |
+| `Striker-Attending-Conference-Web-Art-fb-1024x536.jpg` | Careers |
+
+They are the full-size originals, not resized for the slots they fill — worth optimising if page
+weight ever matters. If a photo is updated on the live WordPress site, it will **not** update
+here; re-download it.
+
+The only remaining external request is the Archivo webfont from Google Fonts.
 
 ## Local preview
 
