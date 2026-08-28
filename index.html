@@ -9,6 +9,28 @@
 <script src="./vendor/react.production.min.js"></script>
 <script src="./vendor/react-dom.production.min.js"></script>
 <script src="./support.js"></script>
+<script>
+(function () {
+  function playBgVideos() {
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    document.querySelectorAll('video.hero-bg-video').forEach(function (v) {
+      v.muted = true;
+      v.defaultMuted = true;
+      v.playsInline = true;
+      v.loop = true;
+      if (!v.paused) return;
+      var p = v.play();
+      if (p && p.catch) p.catch(function () {});
+    });
+  }
+  function start() {
+    playBgVideos();
+    new MutationObserver(playBgVideos).observe(document.documentElement, { childList: true, subtree: true });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
+  else start();
+})();
+</script>
 </head>
 <body>
 <x-dc>
@@ -25,6 +47,22 @@
   input, select, textarea, button { font-family:'Archivo',system-ui,sans-serif; }
   input:focus, select:focus, textarea:focus { outline:2px solid #269389; outline-offset:1px; }
   @keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
+  .hero-bg-video {
+    position:absolute; inset:0; width:100%; height:100%;
+    object-fit:cover; object-position:center 42%;
+    pointer-events:none; z-index:0;
+  }
+  .hero-bg-scrim {
+    position:absolute; inset:0; z-index:1; pointer-events:none;
+    background:linear-gradient(90deg, rgba(14,27,44,.88) 0%, rgba(31,61,104,.78) 46%, rgba(31,61,104,.52) 100%);
+  }
+  .hero-bg-scrim-mobile {
+    position:absolute; inset:0; z-index:1; pointer-events:none;
+    background:linear-gradient(180deg, rgba(14,27,44,.82) 0%, rgba(31,61,104,.7) 100%);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-bg-video { display:none; }
+  }
 </style>
 </helmet>
 
@@ -64,9 +102,13 @@
   <!-- ================= HOME — DIRECTION A ================= -->
   <sc-if value="{{ isHomeA }}" hint-placeholder-val="{{ true }}">
   <div data-screen-label="Home A">
-    <div style="background:#1F3D68;color:#fff;position:relative;overflow:hidden">
-      <div style="position:absolute;right:-60px;top:-40px;width:520px;height:640px;opacity:.07;background-image:url(assets/mark-gradient.png);background-size:contain;background-repeat:no-repeat;background-position:center"></div>
-      <div style="max-width:1240px;margin:0 auto;padding:96px 40px 104px;display:grid;grid-template-columns:1.08fr .92fr;gap:72px;align-items:center;position:relative">
+    <div style="background:#0E1B2C;color:#fff;position:relative;overflow:hidden">
+      <video class="hero-bg-video" autoplay="autoplay" muted="muted" loop="loop" playsinline="playsinline" preload="auto" poster="assets/videos/pallet-of-bottles-poster.jpg" aria-hidden="true">
+        <source src="assets/videos/pallet-of-bottles.mp4?v=3" type="video/mp4" />
+      </video>
+      <div class="hero-bg-scrim" aria-hidden="true"></div>
+      <div style="position:absolute;right:-60px;top:-40px;width:520px;height:640px;opacity:.1;background-image:url(assets/mark-gradient.png);background-size:contain;background-repeat:no-repeat;background-position:center;z-index:1;pointer-events:none"></div>
+      <div style="max-width:1240px;margin:0 auto;padding:96px 40px 104px;display:grid;grid-template-columns:1.08fr .92fr;gap:72px;align-items:center;position:relative;z-index:2">
         <div>
           <div style="display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(169,222,214,.4);color:#A9DED6;font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:8px 14px;border-radius:2px">503A Licensed Compounding Pharmacy</div>
           <h1 style="font-size:62px;line-height:1.03;letter-spacing:-0.035em;font-weight:700;margin:26px 0 0;text-wrap:pretty">Compounding built on quality, safety, and service excellence.</h1>
@@ -77,8 +119,8 @@
             <a href="#" onClick="{{ goCompound }}" style="border:1px solid rgba(255,255,255,.35);color:#fff;font-size:15px;font-weight:600;padding:17px 28px;border-radius:2px" style-hover="background:rgba(255,255,255,.1);color:#fff">For patients: how this works</a>
           </div>
         </div>
-        <div style="position:relative;height:460px">
-          <image-slot id="hero-a" shape="rect" radius="0" src="assets/photos/Home-Header-02.jpg" placeholder="Cleanroom / compounding detail photo"></image-slot>
+        <div style="position:relative;height:460px;box-shadow:0 24px 60px rgba(14,27,44,.35)">
+          <image-slot id="hero-a" shape="rect" radius="0" src="assets/photos/striker-bottles-blue-glove-tech.jpg" placeholder="StrikerRx vials on the compounding bench"></image-slot>
           <div style="position:absolute;left:-28px;bottom:-28px;background:#fff;color:#0E1B2C;padding:22px 26px;max-width:250px;box-shadow:0 18px 50px rgba(14,27,44,.28);pointer-events:none">
             <div style="font-size:34px;font-weight:700;letter-spacing:-0.03em;color:#269389">30+ yrs</div>
             <div style="font-size:14px;line-height:1.45;color:#606060;margin-top:4px">combined pharmacy experience on the compounding bench</div>
@@ -132,7 +174,7 @@
         </div>
       </div>
       <div style="position:relative;height:520px;width:100%">
-        <image-slot id="hero-b" shape="rect" radius="0" src="assets/photos/Home-Header-02.jpg" placeholder="Full-bleed facility photo"></image-slot>
+        <image-slot id="hero-b" shape="rect" radius="0" src="assets/photos/striker-bottles-blue-glove-tech.jpg" placeholder="StrikerRx vials on the compounding bench"></image-slot>
         <div style="position:absolute;left:0;right:0;bottom:0;height:6px;background:linear-gradient(90deg,#158ECE,#34A697,#269389);pointer-events:none"></div>
       </div>
     </div>
@@ -231,7 +273,7 @@
           </div>
         </div>
         <div style="height:520px;position:relative">
-          <image-slot id="about-lab" shape="rect" radius="0" src="assets/photos/GLP-01-Mock-Up-03.jpg" placeholder="Pharmacist at the hood / cleanroom detail"></image-slot>
+          <image-slot id="about-lab" shape="rect" radius="0" src="assets/photos/person-inspecting-vial-quality.jpg" placeholder="Compounding technician inspecting vials for quality"></image-slot>
         </div>
       </div>
     </div>
@@ -711,7 +753,12 @@
               <div style="width:22px;height:2px;background:#0E1B2C"></div>
             </div>
           </div>
-          <div style="background:#1F3D68;color:#fff;padding:32px 22px 34px">
+          <div style="background:#0E1B2C;color:#fff;padding:32px 22px 34px;position:relative;overflow:hidden">
+            <video class="hero-bg-video" autoplay="autoplay" muted="muted" loop="loop" playsinline="playsinline" preload="auto" poster="assets/videos/pallet-of-bottles-poster.jpg" aria-hidden="true">
+              <source src="assets/videos/pallet-of-bottles.mp4?v=3" type="video/mp4" />
+            </video>
+            <div class="hero-bg-scrim-mobile" aria-hidden="true"></div>
+            <div style="position:relative;z-index:2">
             <div style="font-size:10.5px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#A9DED6">503A Licensed Pharmacy</div>
             <h3 style="font-size:31px;line-height:1.06;letter-spacing:-0.03em;font-weight:700;margin:14px 0 14px">Compounding built on quality and service.</h3>
             <div style="width:60px;height:3px;background:linear-gradient(90deg,#158ECE,#34A697);margin-bottom:16px"></div>
@@ -720,8 +767,9 @@
               <div style="background:#269389;color:#fff;font-size:14px;font-weight:600;padding:15px;text-align:center;border-radius:2px">Set up an account</div>
               <div style="border:1px solid rgba(255,255,255,.35);font-size:14px;font-weight:600;padding:15px;text-align:center;border-radius:2px">How this works</div>
             </div>
+            </div>
           </div>
-          <div style="height:190px;position:relative"><image-slot id="m-hero" shape="rect" radius="0" src="assets/photos/Home-Header-02.jpg" placeholder="Facility photo"></image-slot></div>
+          <div style="height:190px;position:relative"><image-slot id="m-hero" shape="rect" radius="0" src="assets/photos/striker-bottles-blue-glove-tech.jpg" placeholder="StrikerRx vials on the compounding bench"></image-slot></div>
           <div style="padding:26px 22px 32px">
             <div style="font-size:11px;font-weight:700;color:#269389;letter-spacing:0.12em">01</div>
             <h4 style="font-size:21px;font-weight:600;letter-spacing:-0.02em;margin:10px 0 8px">Sterile facility. Real standards.</h4>
