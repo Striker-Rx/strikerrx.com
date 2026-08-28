@@ -67,6 +67,13 @@
     position:fixed; inset:0; z-index:80; background:#fff;
     overflow:auto; -webkit-overflow-scrolling:touch;
   }
+  .home-hero-ctas a { min-width:280px; text-align:center; box-sizing:border-box; }
+  .rounded-photo { border-radius:20px; overflow:hidden; height:100%; box-shadow:0 24px 60px rgba(14,27,44,.35); }
+  .track-tab { display:inline-block; font-size:13px; font-weight:600; padding:10px 16px; border-radius:2px; border:1px solid #d4dae1; color:#3a4654; }
+  .track-tab.on { background:#1F3D68; color:#fff; border-color:#1F3D68; }
+  .chooser-card { display:block; background:#fff; padding:40px 36px; min-height:220px; color:#0E1B2C; border:1px solid #E3E7EC; }
+  .chooser-card:hover { border-color:#269389; color:#1F3D68; }
+  .footer-email { white-space:nowrap; }
   @media (prefers-reduced-motion: reduce) {
     .hero-bg-video { display:none; }
   }
@@ -81,8 +88,9 @@
     .home-hero-grid { gap:0 !important; padding-top:32px !important; padding-bottom:0 !important; }
     .home-hero-title { font-size:31px !important; line-height:1.06 !important; margin:14px 0 14px !important; }
     .home-hero-ctas { flex-direction:column !important; margin-top:22px !important; }
-    .home-hero-ctas a { text-align:center; width:100%; box-sizing:border-box; padding:15px !important; }
-    .home-hero-photo { height:190px !important; box-shadow:none !important; width:calc(100% + 44px); margin-left:-22px; margin-top:24px; }
+    .home-hero-ctas a { text-align:center; width:100%; min-width:0 !important; box-sizing:border-box; padding:15px !important; }
+    .home-hero-photo { height:190px !important; width:calc(100% + 44px); margin-left:-22px; margin-top:24px; }
+    .rounded-photo { box-shadow:none !important; }
     .photo-frame { height:240px !important; }
     .exp-rule { border-left:0 !important; border-top:1px solid rgba(255,255,255,.28) !important; padding-left:0 !important; padding-top:28px !important; }
     .home-hero-stat { display:none !important; }
@@ -120,7 +128,7 @@
       </div>
       <div class="site-header-cta" style="display:flex;align-items:center;gap:18px">
         <a href="tel:8324378624" style="font-size:14px;font-weight:500;color:#606060">832.437.8624</a>
-        <a href="#" onClick="{{ goPartner }}" style="background:#1F3D68;color:#fff;font-size:14px;font-weight:600;padding:12px 20px;border-radius:2px;letter-spacing:-0.01em" style-hover="background:#269389;color:#fff">Provider Account</a>
+        <a href="#" onClick="{{ goProvider }}" style="background:#1F3D68;color:#fff;font-size:14px;font-weight:600;padding:12px 20px;border-radius:2px;letter-spacing:-0.01em" style-hover="background:#269389;color:#fff">Provider Account</a>
       </div>
       <a href="#" class="site-menu-btn" onClick="{{ toggleMenu }}" aria-label="Open menu">
         <span></span><span></span>
@@ -130,11 +138,10 @@
       <div class="wrap" style="max-width:1240px;margin:0 auto;padding:0 40px;height:42px;display:flex;align-items:center;gap:34px;font-size:12.5px;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:rgba(255,255,255,.86)">
         <sc-for list="{{ trust }}" as="t" hint-placeholder-count="4">
           <div style="display:flex;align-items:center;gap:34px">
-            <span>{{ t }}</span>
-            <span style="width:4px;height:4px;border-radius:50%;background:#269389;display:block"></span>
+            <span>{{ t.label }}</span>
+            <sc-if value="{{ t.dot }}" hint-placeholder-val="{{ true }}"><span style="width:4px;height:4px;border-radius:50%;background:#269389;display:block"></span></sc-if>
           </div>
         </sc-for>
-        <span style="margin-left:auto;color:#A9DED6;text-transform:none;letter-spacing:0">Katy, Texas</span>
       </div>
     </div>
   </div>
@@ -151,7 +158,7 @@
       </sc-for>
       <a href="#" onClick="{{ goCareers }}" style="display:flex;align-items:center;min-height:48px;font-size:18px;font-weight:500;color:#0E1B2C;border-bottom:1px solid #E3E7EC">Careers</a>
       <a href="tel:8324378624" style="display:block;margin-top:28px;font-size:16px;font-weight:500;color:#606060">832.437.8624</a>
-      <a href="#" onClick="{{ goPartner }}" style="display:block;margin-top:16px;background:#1F3D68;color:#fff;font-size:15px;font-weight:600;padding:16px;border-radius:2px;text-align:center">Provider Account</a>
+      <a href="#" onClick="{{ goProvider }}" style="display:block;margin-top:16px;background:#1F3D68;color:#fff;font-size:15px;font-weight:600;padding:16px;border-radius:2px;text-align:center">Provider Account</a>
     </div>
   </div>
   </sc-if>
@@ -172,14 +179,16 @@
           <div style="width:96px;height:4px;background:linear-gradient(90deg,#158ECE,#34A697);margin:30px 0 26px"></div>
           <p style="font-size:19px;line-height:1.62;color:rgba(255,255,255,.82);max-width:560px;margin:0;font-weight:300">StrikerRx is a 503A-licensed compounding pharmacy partnering with healthcare providers nationwide to deliver patient-specific formulations with quality and consistency you can count on.</p>
           <div class="home-hero-ctas" style="display:flex;gap:14px;margin-top:38px;flex-wrap:wrap">
-            <a href="#" onClick="{{ goPartner }}" style="background:#269389;color:#fff;font-size:15px;font-weight:600;padding:17px 28px;border-radius:2px" style-hover="background:#34A697;color:#fff">For providers: set up an account</a>
-            <a href="#" onClick="{{ goCompound }}" style="border:1px solid rgba(255,255,255,.35);color:#fff;font-size:15px;font-weight:600;padding:17px 28px;border-radius:2px" style-hover="background:rgba(255,255,255,.1);color:#fff">For patients: how this works</a>
+            <a href="#" onClick="{{ goProvider }}" style="background:#269389;color:#fff;font-size:15px;font-weight:600;padding:17px 28px;border-radius:2px" style-hover="background:#34A697;color:#fff">For providers: set up an account</a>
+            <a href="#" onClick="{{ goPatientCompound }}" style="border:1px solid rgba(255,255,255,.35);color:#fff;font-size:15px;font-weight:600;padding:17px 28px;border-radius:2px" style-hover="background:rgba(255,255,255,.1);color:#fff">For patients: how this works</a>
           </div>
         </div>
-        <div class="home-hero-photo" style="position:relative;height:460px;box-shadow:0 24px 60px rgba(14,27,44,.35)">
-          <image-slot id="hero-a" shape="rect" radius="0" src="assets/photos/striker-bottles-blue-glove-tech.jpg" placeholder="StrikerRx vials on the compounding bench"></image-slot>
-          <div class="home-hero-stat" style="position:absolute;left:-28px;bottom:-28px;background:#fff;color:#0E1B2C;padding:22px 26px;max-width:250px;box-shadow:0 18px 50px rgba(14,27,44,.28);pointer-events:none">
-            <div style="font-size:34px;font-weight:700;letter-spacing:-0.03em;color:#269389">30+ yrs</div>
+        <div class="home-hero-photo" style="position:relative;height:460px">
+          <div class="rounded-photo">
+            <image-slot id="hero-a" shape="rounded" radius="20" src="assets/photos/striker-bottles-blue-glove-tech.jpg" placeholder="StrikerRx vials on the compounding bench"></image-slot>
+          </div>
+          <div class="home-hero-stat" style="position:absolute;left:-28px;bottom:-28px;background:#fff;color:#0E1B2C;padding:22px 26px;max-width:250px;border-radius:16px;box-shadow:0 18px 50px rgba(14,27,44,.28);pointer-events:none">
+            <div style="font-size:34px;font-weight:700;letter-spacing:-0.03em;color:#269389">30+ years</div>
             <div style="font-size:14px;line-height:1.45;color:#606060;margin-top:4px">combined pharmacy experience on the compounding bench</div>
           </div>
         </div>
@@ -191,8 +200,7 @@
         <div class="home-pillars" style="display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid #E3E7EC">
           <sc-for list="{{ pillars }}" as="p" hint-placeholder-count="3">
             <div style="padding:44px 40px 8px 0;border-right:1px solid #E3E7EC">
-              <div style="font-size:13px;font-weight:700;color:#269389;letter-spacing:0.12em">{{ p.num }}</div>
-              <h3 style="font-size:26px;line-height:1.18;letter-spacing:-0.025em;font-weight:600;margin:18px 0 14px;max-width:270px;text-wrap:pretty">{{ p.title }}</h3>
+              <h3 style="font-size:26px;line-height:1.18;letter-spacing:-0.025em;font-weight:600;margin:0 0 14px;max-width:270px;text-wrap:pretty">{{ p.title }}</h3>
               <p style="font-size:16px;line-height:1.66;color:#606060;margin:0;max-width:300px;font-weight:300">{{ p.body }}</p>
             </div>
           </sc-for>
@@ -226,9 +234,8 @@
           <a href="#" onClick="{{ goCompound }}" style="font-size:15px;font-weight:600;color:#269389;padding-bottom:6px;border-bottom:2px solid #269389">See all therapeutic categories</a>
         </div>
         <div class="cols-4" style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#E3E7EC;border:1px solid #E3E7EC">
-          <sc-for list="{{ catNames }}" as="c" hint-placeholder-count="8">
-            <a href="#" onClick="{{ c.go }}" style="background:#fff;padding:34px 26px;min-height:150px;display:flex;flex-direction:column;justify-content:space-between;color:#0E1B2C" style-hover="background:#F7F7F7;color:#1F3D68">
-              <div style="font-size:12px;font-weight:600;color:#269389;letter-spacing:0.1em">{{ c.num }}</div>
+          <sc-for list="{{ catNames }}" as="c" hint-placeholder-count="7">
+            <a href="#" onClick="{{ c.go }}" style="background:#fff;padding:34px 26px;min-height:150px;display:flex;flex-direction:column;justify-content:flex-end;color:#0E1B2C" style-hover="background:#F7F7F7;color:#1F3D68">
               <div style="font-size:19px;font-weight:600;line-height:1.22;letter-spacing:-0.02em;text-wrap:pretty">{{ c.name }}</div>
             </a>
           </sc-for>
@@ -258,8 +265,8 @@
           <p style="font-size:18px;line-height:1.62;color:rgba(255,255,255,.74);margin:0;font-weight:300">Set up a provider account or contact our pharmacy team to discuss your practice's compounding needs. Most accounts are active within 24 hours.</p>
         </div>
         <div style="display:flex;gap:14px;flex-wrap:wrap">
-          <a href="#" onClick="{{ goPartner }}" style="background:#269389;color:#fff;font-size:15px;font-weight:600;padding:17px 28px;border-radius:2px" style-hover="background:#34A697;color:#fff">Set up a provider account</a>
-          <a href="#" onClick="{{ goPartner }}" style="border:1px solid rgba(255,255,255,.35);color:#fff;font-size:15px;font-weight:600;padding:17px 28px;border-radius:2px" style-hover="background:rgba(255,255,255,.1);color:#fff">Contact our pharmacy team</a>
+          <a href="#" onClick="{{ goProvider }}" style="background:#269389;color:#fff;font-size:15px;font-weight:600;padding:17px 28px;border-radius:2px" style-hover="background:#34A697;color:#fff">Set up a provider account</a>
+          <a href="#" onClick="{{ goPatient }}" style="border:1px solid rgba(255,255,255,.35);color:#fff;font-size:15px;font-weight:600;padding:17px 28px;border-radius:2px" style-hover="background:rgba(255,255,255,.1);color:#fff">I'm a patient</a>
         </div>
       </div>
     </div>
@@ -321,7 +328,7 @@
           <h2 style="font-size:40px;line-height:1.08;letter-spacing:-0.03em;font-weight:700;margin:0 0 14px">Ready to partner with StrikerRx?</h2>
           <p style="font-size:18px;line-height:1.6;color:rgba(255,255,255,.86);margin:0;font-weight:300">Set up a provider account or contact our pharmacy team to discuss your practice's compounding needs.</p>
         </div>
-        <a href="#" onClick="{{ goPartner }}" style="background:#fff;color:#1F3D68;font-size:15px;font-weight:600;padding:17px 28px;border-radius:2px" style-hover="background:#0E1B2C;color:#fff">Set up a provider account</a>
+        <a href="#" onClick="{{ goProvider }}" style="background:#fff;color:#1F3D68;font-size:15px;font-weight:600;padding:17px 28px;border-radius:2px" style-hover="background:#0E1B2C;color:#fff">Set up a provider account</a>
       </div>
     </div>
   </div>
@@ -345,36 +352,43 @@
           <sc-for list="{{ categories }}" as="c" hint-placeholder-count="7">
             <div style="border-bottom:1px solid #E3E7EC">
               <a href="#" onClick="{{ c.toggle }}" class="cat-row" style="display:flex;align-items:center;gap:28px;padding:30px 4px;color:#0E1B2C" style-hover="color:#269389">
-                <span style="font-size:13px;font-weight:600;color:#269389;letter-spacing:0.1em;width:34px">{{ c.num }}</span>
                 <span class="cat-name" style="font-size:30px;font-weight:600;letter-spacing:-0.025em;flex:1;text-wrap:pretty">{{ c.name }}</span>
                 <span style="font-size:26px;font-weight:300;color:#606060">{{ c.sign }}</span>
               </a>
               <sc-if value="{{ c.open }}" hint-placeholder-val="{{ true }}">
-                <div class="cols-2" style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#E3E7EC;margin:0 0 30px;border:1px solid #E3E7EC">
-                  <div style="background:#F7F7F7;padding:32px 30px">
-                    <div style="font-size:12px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#1F3D68;margin-bottom:12px">For providers</div>
-                    <p style="font-size:16.5px;line-height:1.66;margin:0;color:#3a4654;font-weight:300">{{ c.providers }}</p>
+                <div style="margin:0 0 30px;padding:28px 4px 8px">
+                  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px">
+                    <a href="#" onClick="{{ setProviderTrack }}" class="track-tab {{ c.providerOn }}">For providers</a>
+                    <a href="#" onClick="{{ setPatientTrack }}" class="track-tab {{ c.patientOn }}">For patients</a>
                   </div>
-                  <div style="background:#F7F7F7;padding:32px 30px">
-                    <div style="font-size:12px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#269389;margin-bottom:12px">For patients</div>
-                    <p style="font-size:16.5px;line-height:1.66;margin:0;color:#3a4654;font-weight:300">{{ c.patients }}</p>
-                  </div>
+                  <sc-if value="{{ noAudience }}" hint-placeholder-val="{{ true }}">
+                    <p style="font-size:16px;line-height:1.66;color:#606060;margin:0;font-weight:300">Choose a track to see how this category works for you.</p>
+                  </sc-if>
+                  <sc-if value="{{ isProvider }}" hint-placeholder-val="{{ true }}">
+                    <div style="background:#F7F7F7;padding:32px 30px">
+                      <div style="font-size:12px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#1F3D68;margin-bottom:12px">Provider track</div>
+                      <p style="font-size:16.5px;line-height:1.66;margin:0 0 22px;color:#3a4654;font-weight:300">{{ c.providers }}</p>
+                      <a href="#" onClick="{{ goProvider }}" style="display:inline-block;background:#269389;color:#fff;font-size:15px;font-weight:600;padding:14px 22px;border-radius:2px" style-hover="background:#1F3D68;color:#fff">Set up a provider account</a>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ isPatient }}" hint-placeholder-val="{{ true }}">
+                    <div style="background:#F7F7F7;padding:32px 30px">
+                      <div style="font-size:12px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#269389;margin-bottom:12px">Patient track</div>
+                      <p style="font-size:16.5px;line-height:1.66;margin:0 0 22px;color:#3a4654;font-weight:300">{{ c.patients }}</p>
+                      <a href="#" onClick="{{ goPatient }}" style="display:inline-block;background:#1F3D68;color:#fff;font-size:15px;font-weight:600;padding:14px 22px;border-radius:2px" style-hover="background:#269389;color:#fff">Ask a question</a>
+                    </div>
+                  </sc-if>
                 </div>
               </sc-if>
             </div>
           </sc-for>
-          <div style="border-bottom:1px solid #E3E7EC;padding:30px 4px;display:flex;align-items:center;gap:28px;color:#9aa4ae">
-            <span style="font-size:13px;font-weight:600;letter-spacing:0.1em;width:34px">08</span>
-            <span style="font-size:30px;font-weight:300;letter-spacing:-0.025em">Future category</span>
-            <span style="font-size:13px;margin-left:auto;letter-spacing:0.06em;text-transform:uppercase">Placeholder</span>
-          </div>
         </div>
       </div>
     </div>
     <div style="background:#0E1B2C;color:#fff">
       <div class="wrap" style="max-width:1240px;margin:0 auto;padding:78px 40px;display:flex;align-items:center;justify-content:space-between;gap:50px;flex-wrap:wrap">
-        <h2 style="font-size:36px;line-height:1.12;letter-spacing:-0.03em;font-weight:700;margin:0;max-width:600px">Don't see what your practice needs?</h2>
-        <a href="#" onClick="{{ goPartner }}" style="background:#269389;color:#fff;font-size:15px;font-weight:600;padding:17px 28px;border-radius:2px" style-hover="background:#34A697;color:#fff">Ask our pharmacy team</a>
+        <h2 style="font-size:36px;line-height:1.12;letter-spacing:-0.03em;font-weight:700;margin:0;max-width:600px">{{ compoundCtaTitle }}</h2>
+        <a href="#" onClick="{{ compoundCtaGo }}" style="background:#269389;color:#fff;font-size:15px;font-weight:600;padding:17px 28px;border-radius:2px" style-hover="background:#34A697;color:#fff">{{ compoundCtaLabel }}</a>
       </div>
     </div>
   </div>
@@ -386,17 +400,36 @@
     <div style="background:#F7F7F7">
       <div class="wrap" style="max-width:1240px;margin:0 auto;padding:88px 40px 76px">
         <h1 class="page-title" style="font-size:62px;line-height:1.02;letter-spacing:-0.04em;font-weight:700;margin:0">Work with StrikerRx</h1>
-        <p style="font-size:19px;line-height:1.62;color:#3a4654;margin:18px 0 0;max-width:660px;font-weight:300">Whether you are setting up a new provider account or have a question about an existing order, our pharmacy team responds within 24 hours or less.</p>
+        <p style="font-size:19px;line-height:1.62;color:#3a4654;margin:18px 0 0;max-width:660px;font-weight:300">{{ partnerIntro }}</p>
       </div>
     </div>
 
+    <sc-if value="{{ noAudience }}" hint-placeholder-val="{{ true }}">
+    <div style="background:#fff">
+      <div class="wrap cols-2" style="max-width:1240px;margin:0 auto;padding:20px 40px 96px;display:grid;grid-template-columns:1fr 1fr;gap:24px">
+        <a href="#" onClick="{{ goProvider }}" class="chooser-card" style-hover="border-color:#269389;color:#1F3D68">
+          <div style="font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#269389;margin-bottom:14px">For healthcare providers</div>
+          <h2 style="font-size:32px;line-height:1.12;letter-spacing:-0.03em;font-weight:700;margin:0 0 14px">Set up a provider account</h2>
+          <p style="font-size:16px;line-height:1.62;color:#606060;margin:0;font-weight:300">Request a formulation list, ask a clinical question, or open an account. Most accounts are active within 24 hours.</p>
+        </a>
+        <a href="#" onClick="{{ goPatient }}" class="chooser-card" style-hover="border-color:#269389;color:#1F3D68">
+          <div style="font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#269389;margin-bottom:14px">For patients</div>
+          <h2 style="font-size:32px;line-height:1.12;letter-spacing:-0.03em;font-weight:700;margin:0 0 14px">Have a question?</h2>
+          <p style="font-size:16px;line-height:1.62;color:#606060;margin:0;font-weight:300">We compound from a valid prescription. Ask your provider to submit it, or send us a question about an existing order.</p>
+        </a>
+      </div>
+    </div>
+    </sc-if>
+
     <!-- PROVIDER -->
+    <sc-if value="{{ isProvider }}" hint-placeholder-val="{{ true }}">
     <div style="background:#1F3D68;color:#fff">
       <div class="wrap cols-2" style="max-width:1240px;margin:0 auto;padding:88px 40px;display:grid;grid-template-columns:.85fr 1.15fr;gap:72px;align-items:start">
         <div>
           <div style="font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#A9DED6">For healthcare providers</div>
           <h2 style="font-size:40px;line-height:1.08;letter-spacing:-0.03em;font-weight:700;margin:16px 0 18px">Set up a provider account</h2>
           <p style="font-size:17px;line-height:1.66;color:rgba(255,255,255,.8);margin:0;font-weight:300">New to StrikerRx? Use the provider form to set up an account, request a formulation list, or ask a clinical question. Already a provider? Contact your account representative directly.</p>
+          <a href="#" onClick="{{ goPatient }}" style="display:inline-block;margin-top:18px;font-size:14px;font-weight:600;color:#A9DED6">Not a provider? Patient questions →</a>
           <div style="margin-top:34px;padding-top:26px;border-top:1px solid rgba(255,255,255,.2);display:flex;flex-direction:column;gap:14px">
             <div style="font-size:15px;color:rgba(255,255,255,.9)">customersupport@strikerrx.com</div>
             <div style="font-size:15px;color:rgba(255,255,255,.9)">832.437.8624</div>
@@ -525,14 +558,17 @@
         </div>
       </div>
     </div>
+    </sc-if>
 
     <!-- PATIENT -->
+    <sc-if value="{{ isPatient }}" hint-placeholder-val="{{ true }}">
     <div style="background:#A9DED6;color:#0E1B2C">
       <div class="wrap cols-2" style="max-width:1240px;margin:0 auto;padding:88px 40px;display:grid;grid-template-columns:.85fr 1.15fr;gap:72px;align-items:start">
         <div>
           <div style="font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#1F3D68">For patients</div>
           <h2 style="font-size:40px;line-height:1.08;letter-spacing:-0.03em;font-weight:700;margin:16px 0 18px">Have a question?</h2>
           <p style="font-size:17px;line-height:1.66;color:rgba(14,27,44,.76);margin:0;font-weight:300">StrikerRx compounds medications using valid prescriptions from licensed providers. We do not accept direct patient orders. Ask your provider to submit your prescription through their StrikerRx account.</p>
+          <a href="#" onClick="{{ goProvider }}" style="display:inline-block;margin-top:18px;font-size:14px;font-weight:600;color:#1F3D68">Are you a provider? Set up an account →</a>
         </div>
         <div class="form-card" style="background:#fff;padding:40px 44px 44px">
           <sc-if value="{{ patientDone }}" hint-placeholder-val="{{ true }}">
@@ -576,6 +612,7 @@
         </div>
       </div>
     </div>
+    </sc-if>
 
     <div style="background:#F7F7F7">
       <div class="wrap" style="max-width:1240px;margin:0 auto;padding:70px 40px">
@@ -636,7 +673,7 @@
           </div>
         </div>
         <div class="photo-frame" style="height:420px;position:relative">
-          <image-slot id="careers-team" shape="rect" radius="0" src="assets/photos/Striker-Attending-Conference-Web-Art-fb-1024x536.jpg" placeholder="Team at work"></image-slot>
+          <image-slot id="careers-team" shape="rect" radius="0" src="assets/photos/Home-Header-02.jpg" placeholder="Team at work"></image-slot>
         </div>
       </div>
     </div>
@@ -769,7 +806,7 @@
           <div style="font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#A9DED6;margin-bottom:4px">Contact</div>
           <div style="font-size:15px;line-height:1.6;color:rgba(255,255,255,.8)">1330 Pin Oak Rd<br />Katy, Texas 77494</div>
           <a href="tel:8324378624" style="font-size:15px;color:rgba(255,255,255,.8)" style-hover="color:#A9DED6">832.437.8624</a>
-          <a href="mailto:customersupport@strikerrx.com" style="font-size:15px;color:rgba(255,255,255,.8);word-break:break-all" style-hover="color:#A9DED6">customersupport@strikerrx.com</a>
+          <a href="mailto:customersupport@strikerrx.com" class="footer-email" style="font-size:15px;color:rgba(255,255,255,.8)" style-hover="color:#A9DED6">customersupport@strikerrx.com</a>
         </div>
         <div style="display:flex;flex-direction:column;gap:12px">
           <div style="font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#A9DED6;margin-bottom:4px">Hours</div>
@@ -794,7 +831,7 @@
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440}}">
 class Component extends DCLogic {
   state = {
-    page: 'home', menuOpen: false, openCat: 0, role: null, applied: false,
+    page: 'home', audience: null, menuOpen: false, openCat: 0, role: null, applied: false,
     step: 1, pDone: false, err: '', f: {}, cats: {},
     pf: {}, patDone: false, patErr: ''
   };
@@ -837,7 +874,11 @@ class Component extends DCLogic {
       label, active: page === key, idle: page !== key,
       go: e => { e.preventDefault(); this.go(key); }
     });
-    const nav = [mk('Home', 'home'), mk('About StrikerRx', 'about'), mk('What We Compound', 'compound'), mk('Partner With Us', 'partner'), mk('Insights', 'insights')];
+    const nav = [
+      mk('Home', 'home'), mk('About StrikerRx', 'about'), mk('What We Compound', 'compound'),
+      { label: 'Partner With Us', active: page === 'partner', idle: page !== 'partner', go: e => { e.preventDefault(); this.setState({ audience: null, page: 'partner', menuOpen: false, role: null, err: '' }); window.scrollTo(0, 0); } },
+      mk('Insights', 'insights')
+    ];
 
     const cat = (name, providers, patients) => ({ name, providers, patients });
     const cats = [
@@ -863,8 +904,6 @@ class Component extends DCLogic {
         'StrikerRx compounds sterile and non-sterile preparations for licensed prescribers working in functional medicine and preventative care. All formulations are patient-specific and prepared to USP standards.',
         'Immune and wellness support compounded medications are prepared specifically for you, based on your provider\u2019s assessment and your individual health needs.')
     ];
-    const pad = i => String(i + 1).padStart(2, '0');
-
     const roles = [
       { title: 'Compounding Pharmacist (PharmD)', dept: 'Pharmacy', type: 'Full-time',
         summary: 'You will own sterile and non-sterile preparations from verification through final release — checking every formulation, signing off on documentation, and being the voice on the phone when a provider has a clinical question.',
@@ -900,13 +939,36 @@ class Component extends DCLogic {
     return {
       nav,
       goHome: e => { e.preventDefault(); this.go('home'); },
-      goPartner: e => { e.preventDefault(); this.go('partner'); },
+      goPartner: e => { e.preventDefault(); this.setState({ audience: null, page: 'partner', menuOpen: false, role: null, err: '' }); window.scrollTo(0, 0); },
+      goProvider: e => { e.preventDefault(); this.setState({ audience: 'provider', page: 'partner', menuOpen: false, role: null, err: '' }); window.scrollTo(0, 0); },
+      goPatient: e => { e.preventDefault(); this.setState({ audience: 'patient', page: 'partner', menuOpen: false, role: null, err: '' }); window.scrollTo(0, 0); },
+      goPatientCompound: e => { e.preventDefault(); this.setState({ audience: 'patient', page: 'compound', menuOpen: false }); window.scrollTo(0, 0); },
       goCompound: e => { e.preventDefault(); this.go('compound'); },
       goCareers: e => { e.preventDefault(); this.go('careers'); },
+      setProviderTrack: e => { e.preventDefault(); this.setState({ audience: 'provider' }); },
+      setPatientTrack: e => { e.preventDefault(); this.setState({ audience: 'patient' }); },
 
-      trust: ['503A Licensed', 'USP <797> Compliant', 'FDA-Registered Ingredients', 'Providers Nationwide'],
+      trust: [
+        { label: '503A Licensed', dot: true },
+        { label: 'USP <797> Compliant', dot: true },
+        { label: 'FDA-Registered Ingredients', dot: true },
+        { label: 'Providers Nationwide', dot: false }
+      ],
 
       isHome,
+      isProvider: st.audience === 'provider',
+      isPatient: st.audience === 'patient',
+      noAudience: !st.audience,
+      partnerIntro: st.audience === 'provider'
+        ? 'Set up a provider account or ask a clinical question. Our pharmacy team responds within 24 hours or less.'
+        : st.audience === 'patient'
+        ? 'Have a question about a prescription? Our customer service team responds within one business day.'
+        : 'Choose whether you are a provider or a patient. The next step is different for each.',
+      compoundCtaTitle: st.audience === 'patient' ? 'Have a question about your prescription?' : 'Don\u2019t see what your practice needs?',
+      compoundCtaLabel: st.audience === 'patient' ? 'Ask a question' : 'Ask our pharmacy team',
+      compoundCtaGo: st.audience === 'patient'
+        ? (e => { e.preventDefault(); this.setState({ audience: 'patient', page: 'partner', menuOpen: false }); window.scrollTo(0, 0); })
+        : (e => { e.preventDefault(); this.setState({ audience: 'provider', page: 'partner', menuOpen: false }); window.scrollTo(0, 0); }),
       isAbout: page === 'about', isCompound: page === 'compound', isPartner: page === 'partner',
       isInsights: page === 'insights', isCareers: page === 'careers', isRole: page === 'role',
       menuOpen: st.menuOpen,
@@ -919,12 +981,13 @@ class Component extends DCLogic {
         { num: '03', title: 'Patient-specific.', body: 'Every prescription is dispensed specially for the individual patient according to the provider\u2019s exact directions.' }
       ],
 
-      catNames: cats.map((c, i) => ({ num: pad(i), name: c.name, go: e => { e.preventDefault(); this.setState({ openCat: i }); this.go('compound'); } }))
-        .concat([{ num: '08', name: 'Future category', go: e => { e.preventDefault(); this.go('compound'); } }]),
+      catNames: cats.map((c, i) => ({ name: c.name, go: e => { e.preventDefault(); this.setState({ openCat: i }); this.go('compound'); } })),
 
       categories: cats.map((c, i) => ({
-        num: pad(i), name: c.name, providers: c.providers, patients: c.patients,
+        name: c.name, providers: c.providers, patients: c.patients,
         open: st.openCat === i, sign: st.openCat === i ? '\u2212' : '+',
+        providerOn: st.audience === 'provider' ? 'on' : '',
+        patientOn: st.audience === 'patient' ? 'on' : '',
         toggle: e => { e.preventDefault(); this.setState(s => ({ openCat: s.openCat === i ? -1 : i })); }
       })),
 
@@ -948,7 +1011,7 @@ class Component extends DCLogic {
       posts: [
         { slot: 'post-1', img: 'assets/photos/The-Gold-Standard-in-Patient-Safety-Striker-blog-1024x536.jpg', tag: 'Patient safety', title: 'How StrikerRx protects your health', excerpt: 'The gold standard in patient safety \u2014 and what it means for the practices we serve.' },
         { slot: 'post-2', img: 'assets/photos/Striker-Pharma-Compound-Pharmacy-vs-1-1024x536.jpg', tag: 'Pharmacy', title: 'Compounding vs. retail pharmacy: what sets us apart', excerpt: 'Why one size does not fit all, and where patient-specific formulation changes the outcome.' },
-        { slot: 'post-3', img: 'assets/photos/GLP-01-Mock-Up-03.jpg', tag: 'Placeholder', title: 'Article headline goes here', excerpt: 'Short standfirst for the post. In Webflow this is a CMS field your team fills in.' }
+        { slot: 'post-3', img: 'assets/photos/Bottles-colorful.jpg', tag: 'Compounding', title: 'Article headline goes here', excerpt: 'Short standfirst for the post. In Webflow this is a CMS field your team fills in.' }
       ],
 
       culture: [
