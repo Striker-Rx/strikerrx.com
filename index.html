@@ -84,18 +84,34 @@
   .insight-card { display:flex; flex-direction:column; gap:20px; color:#0E1B2C; }
   .insight-card:hover h3 { color:#269389; }
   .insight-photo { height:220px; border-radius:20px; overflow:hidden; position:relative; }
-  .post-table { width:100%; border-collapse:collapse; margin:8px 0 32px; }
-  .post-table th, .post-table td { text-align:left; vertical-align:top; padding:14px 18px; font-size:15.5px; line-height:1.5; }
+  .post-table { width:100%; border-collapse:collapse; margin:8px 0 32px; table-layout:fixed; }
+  .post-table th, .post-table td { text-align:left; vertical-align:top; padding:14px 18px; font-size:15.5px; line-height:1.5; width:50%; overflow-wrap:break-word; hyphens:none; text-wrap:pretty; }
   .post-table th { background:#1F3D68; color:#fff; font-weight:600; }
   .post-table td { border-bottom:1px solid #E3E7EC; color:#3a4654; font-weight:300; }
-  .post-table td:first-child { background:#F7F7F7; font-weight:500; color:#0E1B2C; width:50%; }
+  .post-table td:first-child { background:#F7F7F7; font-weight:500; color:#0E1B2C; }
+  .values-grid h3, .values-grid p { text-wrap:pretty; }
+  .getting-steps { display:grid; grid-template-columns:repeat(4,1fr); gap:28px; margin-top:36px; }
+  .post-byline { font-size:14.5px; line-height:1.6; color:#3a4654; font-weight:300; margin:0 0 6px; }
+  .post-refs { margin:48px 0 0; padding-top:28px; border-top:1px solid #E3E7EC; }
+  .post-refs a { display:block; font-size:15px; line-height:1.55; font-weight:400; margin:0 0 10px; }
   .post-list { display:flex; flex-direction:column; gap:12px; margin:4px 0 28px; }
   .post-list-item { display:flex; gap:14px; align-items:flex-start; font-size:17px; line-height:1.62; color:#3a4654; font-weight:300; }
   .post-lead { font-weight:600; color:#0E1B2C; }
   .disclaimer { font-size:14.5px; line-height:1.65; color:#3a4654; font-style:italic; font-weight:300; padding:20px 24px; background:#F7F7F7; border-radius:12px; }
   .footer-email { white-space:nowrap; }
+  .site-trust span { white-space:nowrap; }
+  .site-header-cta a.btn { white-space:nowrap; }
   @media (prefers-reduced-motion: reduce) {
     .hero-bg-video { display:none; }
+  }
+  @media (max-width: 1200px) {
+    .site-nav { gap:22px !important; }
+    .site-header-cta { gap:12px !important; }
+    .site-trust .wrap { gap:18px !important; font-size:11.5px !important; letter-spacing:0.04em !important; }
+  }
+  @media (max-width: 1100px) {
+    .values-grid { grid-template-columns:1fr 1fr !important; }
+    .getting-steps { grid-template-columns:1fr 1fr !important; }
   }
   @media (max-width: 900px) {
     .site-nav, .site-header-cta, .site-trust { display:none !important; }
@@ -119,6 +135,8 @@
     }
     .home-pillars { grid-template-columns:1fr !important; gap:8px !important; }
     .home-pillars > div { padding:26px 0 32px !important; }
+    .getting-steps { grid-template-columns:1fr !important; gap:22px !important; }
+    .values-grid { grid-template-columns:1fr !important; }
     .cta-pair { flex-direction:column !important; }
     .cta-pair a { width:100%; min-width:0 !important; }
     .cat-list a { font-size:18px !important; padding:14px 0 !important; }
@@ -200,10 +218,10 @@
       <div style="position:absolute;right:-60px;top:-40px;width:520px;height:640px;opacity:.1;background-image:url(assets/mark-gradient.png);background-size:contain;background-repeat:no-repeat;background-position:center;z-index:1;pointer-events:none"></div>
       <div class="wrap home-hero-grid" style="max-width:1240px;margin:0 auto;padding:96px 40px 104px;display:grid;grid-template-columns:1.08fr .92fr;gap:72px;align-items:center;position:relative;z-index:2">
         <div>
-          <div style="display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(169,222,214,.4);color:#A9DED6;font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:8px 14px;border-radius:2px">503A Licensed Compounding Pharmacy</div>
+          <div style="display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(169,222,214,.4);color:#A9DED6;font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:8px 14px;border-radius:2px">Texas-Licensed Compounding Pharmacy</div>
           <h1 class="home-hero-title" style="font-size:62px;line-height:1.03;letter-spacing:-0.035em;font-weight:700;margin:26px 0 0;text-wrap:pretty">Compounding built on quality, safety, and service excellence.</h1>
           <div style="width:96px;height:4px;background:linear-gradient(90deg,#158ECE,#34A697);margin:30px 0 26px"></div>
-          <p style="font-size:19px;line-height:1.62;color:rgba(255,255,255,.82);max-width:560px;margin:0;font-weight:300">StrikerRx is a 503A-licensed compounding pharmacy partnering with healthcare providers nationwide to deliver patient-specific formulations with quality and consistency you can count on.</p>
+          <p style="font-size:19px;line-height:1.62;color:rgba(255,255,255,.82);max-width:560px;margin:0;font-weight:300">StrikerRx partners with healthcare providers to deliver patient-specific formulations with quality and consistency you can count on.</p>
           <div class="home-hero-ctas" style="display:flex;gap:14px;margin-top:38px;flex-wrap:wrap">
             <a href="#" onClick="{{ goProvider }}" class="btn" style="background:#269389;color:#fff;font-size:15px;font-weight:600;padding:17px 28px" style-hover="background:#34A697;color:#fff">For providers: set up an account</a>
             <a href="#" onClick="{{ goPatientCompound }}" class="btn" style="border:1px solid rgba(255,255,255,.35);color:#fff;font-size:15px;font-weight:600;padding:17px 28px" style-hover="background:rgba(255,255,255,.1);color:#fff">For patients: how this works</a>
@@ -226,8 +244,33 @@
         <div class="home-pillars" style="display:grid;grid-template-columns:repeat(3,1fr);gap:48px">
           <sc-for list="{{ pillars }}" as="p" hint-placeholder-count="3">
             <div style="padding:8px 8px 8px 0">
-              <h3 style="font-size:26px;line-height:1.18;letter-spacing:-0.025em;font-weight:600;margin:0 0 14px;max-width:270px;text-wrap:pretty">{{ p.title }}</h3>
-              <p style="font-size:16px;line-height:1.66;color:#606060;margin:0;max-width:300px;font-weight:300">{{ p.body }}</p>
+              <h3 style="font-size:26px;line-height:1.18;letter-spacing:-0.025em;font-weight:600;margin:0 0 14px;max-width:340px;text-wrap:pretty">{{ p.title }}</h3>
+              <p style="font-size:16px;line-height:1.66;color:#606060;margin:0;max-width:340px;font-weight:300">{{ p.body }}</p>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:#F7F7F7">
+      <div class="wrap cols-2" style="max-width:1240px;margin:0 auto;padding:96px 40px;display:grid;grid-template-columns:1.15fr .85fr;gap:72px;align-items:start">
+        <div>
+          <h2 style="font-size:42px;line-height:1.08;letter-spacing:-0.03em;font-weight:700;margin:0 0 20px;text-wrap:pretty">Why providers choose StrikerRx</h2>
+          <p style="font-size:18px;line-height:1.66;color:#3a4654;margin:0;font-weight:300">StrikerRx combines responsive service, pharmacist support, sterile compounding expertise, and patient-specific formulation capabilities to help providers deliver personalized care. Our team works directly with healthcare professionals to support customized dosage strengths and formulations when clinically appropriate, with shipping, delivery, and pickup options available. Every prescription is supported by established quality controls, including ingredients sourced from FDA-registered establishments, sterile compounding protocols, and quality assurance testing designed to support product quality, purity, and potency.</p>
+        </div>
+        <div>
+          <h2 style="font-size:42px;line-height:1.08;letter-spacing:-0.03em;font-weight:700;margin:0 0 20px;text-wrap:pretty">Getting started</h2>
+          <p style="font-size:18px;line-height:1.66;color:#3a4654;margin:0 0 28px;font-weight:300">After you connect with our team, we guide you through the provider and practice documentation needed for verification. We strive to have new accounts active within 24 business hours once all required information is received.</p>
+          <a href="#" onClick="{{ goProvider }}" class="btn" style="display:inline-block;background:#269389;color:#fff;font-size:15px;font-weight:600;padding:17px 28px" style-hover="background:#1F3D68;color:#fff">Set up a provider account</a>
+        </div>
+      </div>
+      <div class="wrap" style="max-width:1240px;margin:0 auto;padding:0 40px 96px">
+        <div class="getting-steps">
+          <sc-for list="{{ gettingSteps }}" as="s" hint-placeholder-count="4">
+            <div>
+              <div style="font-size:13px;font-weight:700;letter-spacing:0.14em;color:#269389;margin-bottom:10px">{{ s.n }}</div>
+              <h3 style="font-size:20px;line-height:1.25;letter-spacing:-0.02em;font-weight:600;margin:0 0 10px">{{ s.title }}</h3>
+              <p style="font-size:15.5px;line-height:1.6;color:#606060;margin:0;font-weight:300">{{ s.body }}</p>
             </div>
           </sc-for>
         </div>
@@ -284,7 +327,7 @@
       <div class="wrap" style="max-width:1240px;margin:0 auto;padding:92px 40px;display:flex;align-items:center;justify-content:space-between;gap:60px;flex-wrap:wrap">
         <div style="max-width:620px">
           <h2 style="font-size:44px;line-height:1.06;letter-spacing:-0.032em;font-weight:700;margin:0 0 16px">Ready to partner with StrikerRx?</h2>
-          <p style="font-size:18px;line-height:1.62;color:rgba(255,255,255,.74);margin:0;font-weight:300">Set up a provider account or contact our pharmacy team to discuss your practice's compounding needs. Most accounts are active within 24 hours.</p>
+          <p style="font-size:18px;line-height:1.62;color:rgba(255,255,255,.74);margin:0;font-weight:300">Set up a provider account or contact our pharmacy team to discuss your practice's compounding needs. We strive to have new accounts active within 24 business hours once all required information is received.</p>
         </div>
         <div class="cta-pair" style="display:flex;gap:14px;flex-wrap:wrap">
           <a href="#" onClick="{{ goProvider }}" class="btn" style="background:#269389;color:#fff;font-size:15px;font-weight:600;padding:17px 28px" style-hover="background:#34A697;color:#fff">Set up a provider account</a>
@@ -308,8 +351,8 @@
       <div class="wrap cols-2" style="max-width:1240px;margin:0 auto;padding:88px 40px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start">
         <div>
           <div style="font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#606060">Why this business exists</div>
-          <p style="font-size:19px;line-height:1.68;margin:20px 0 20px;font-weight:300;text-wrap:pretty">StrikerRx is a 503A-licensed sterile compounding pharmacy operating out of Katy, Texas. We prepare patient-specific medications for healthcare providers who need formulations not available through commercial manufacturing: different doses, different delivery forms, allergen-free alternatives, or combinations that simply do not exist at retail scale.</p>
-          <p style="font-size:19px;line-height:1.68;margin:0;font-weight:300;text-wrap:pretty">We work with providers across every specialty, from primary care and weight loss clinics to hormone therapy, medical spas, and telemedicine. Every compound we prepare is tied to a specific patient, a specific prescription, and specific clinical needs.</p>
+          <p style="font-size:19px;line-height:1.68;margin:20px 0 20px;font-weight:300;text-wrap:pretty">StrikerRx is a Texas-licensed compounding pharmacy in Katy, Texas, operating under applicable section 503A requirements. We prepare patient-specific medications for healthcare providers who need formulations not available through commercial manufacturing: different doses, different delivery forms, allergen-free alternatives, or combinations that simply do not exist at retail scale.</p>
+          <p style="font-size:19px;line-height:1.68;margin:0;font-weight:300;text-wrap:pretty">We work with providers across a range of specialties, from primary care and weight loss clinics to hormone therapy, medical spas, and telemedicine. Every compound we prepare is tied to a specific patient, a specific prescription, and specific clinical needs.</p>
           <div style="margin-top:38px;border-left:3px solid #269389;padding-left:22px">
             <div style="font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#606060">Team credentials</div>
             <p style="font-size:18px;line-height:1.6;margin:10px 0 0;font-weight:400">Our compounding staff bring more than 30 years of combined pharmaceutical experience to every preparation we make.</p>
@@ -333,7 +376,7 @@
     <div style="background:#fff">
       <div class="wrap" style="max-width:1240px;margin:0 auto;padding:96px 40px">
         <h2 style="font-size:42px;line-height:1.08;letter-spacing:-0.03em;font-weight:700;margin:0 0 44px">Core values</h2>
-        <div class="cols-3" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#E3E7EC;border:1px solid #E3E7EC">
+        <div class="cols-3 values-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#E3E7EC;border:1px solid #E3E7EC">
           <sc-for list="{{ values }}" as="v" hint-placeholder-count="6">
             <div style="background:#fff;padding:36px 32px;min-height:200px">
               <h3 style="font-size:22px;line-height:1.2;letter-spacing:-0.02em;font-weight:600;margin:0 0 12px">{{ v.title }}</h3>
@@ -362,8 +405,8 @@
       <div class="wrap cols-2" style="max-width:1240px;margin:0 auto;padding:88px 40px 76px;display:grid;grid-template-columns:1.1fr .9fr;gap:70px;align-items:end">
         <h1 class="page-title" style="font-size:62px;line-height:1.02;letter-spacing:-0.04em;font-weight:700;margin:0">What we compound</h1>
         <div>
-          <p style="font-size:18px;line-height:1.66;margin:0 0 14px;font-weight:300;color:#3a4654">StrikerRx prepares sterile and non-sterile patient-specific compounded medications across the therapeutic categories below.</p>
-          <p style="font-size:18px;line-height:1.66;margin:0;font-weight:300;color:#3a4654">We do not sell medications directly to patients. If your provider has recommended a compounded medication, ask them to contact us or submit a prescription through their StrikerRx account.</p>
+          <p style="font-size:18px;line-height:1.66;margin:0 0 14px;font-weight:300;color:#3a4654">StrikerRx prepares sterile and non-sterile patient-specific compounded medications across the therapeutic categories below. Sterile preparations are compounded in accordance with USP &lt;797&gt;; nonsterile preparations are compounded in accordance with USP &lt;795&gt;.</p>
+          <p style="font-size:18px;line-height:1.66;margin:0;font-weight:300;color:#3a4654">StrikerRx dispenses compounded medications only pursuant to valid patient-specific prescriptions from licensed providers. If your provider has recommended a compounded medication, ask them to contact us or submit a prescription through their StrikerRx account.</p>
         </div>
       </div>
     </div>
@@ -412,7 +455,7 @@
         <a href="#" onClick="{{ goProvider }}" class="chooser-card chooser-provider" style-hover="background:#274a7a;color:#fff">
           <div style="font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#A9DED6;margin-bottom:14px">For healthcare providers</div>
           <h2 style="font-size:32px;line-height:1.12;letter-spacing:-0.03em;font-weight:700;margin:0 0 14px;color:#fff">Set up a provider account</h2>
-          <p style="font-size:16px;line-height:1.62;color:rgba(255,255,255,.82);margin:0 0 28px;font-weight:300">Request a formulation list, ask a clinical question, or open an account. Most accounts are active within 24 hours.</p>
+          <p style="font-size:16px;line-height:1.62;color:rgba(255,255,255,.82);margin:0 0 28px;font-weight:300">Request a formulation list, ask a clinical question, or open an account. We strive to have new accounts active within 24 business hours once all required information is received.</p>
           <span class="btn" style="display:inline-block;background:#269389;color:#fff;font-size:15px;font-weight:600;padding:14px 22px">Fill out the form →</span>
         </a>
         <a href="#" onClick="{{ goPatient }}" class="chooser-card chooser-patient" style-hover="background:#2ea396;color:#fff">
@@ -432,11 +475,12 @@
         <div>
           <div style="font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#A9DED6">For healthcare providers</div>
           <h2 style="font-size:40px;line-height:1.08;letter-spacing:-0.03em;font-weight:700;margin:16px 0 18px">Set up a provider account</h2>
-          <p style="font-size:17px;line-height:1.66;color:rgba(255,255,255,.8);margin:0;font-weight:300">New to StrikerRx? Use the provider form to set up an account, request a formulation list, or ask a clinical question. Already a provider? Contact your account representative directly.</p>
+          <p style="font-size:17px;line-height:1.66;color:rgba(255,255,255,.8);margin:0;font-weight:300">Getting started with StrikerRx is straightforward. After connecting with our team, you'll receive guidance on the required provider and practice documentation needed for verification and onboarding. We strive to have new accounts active within 24 business hours once all required information is received.</p>
+          <p style="font-size:17px;line-height:1.66;color:rgba(255,255,255,.8);margin:18px 0 0;font-weight:300">Once your practice is approved, prescriptions can be submitted through e-prescribing or fax. Our team strives to respond to provider inquiries within one business day and will follow up if additional information is needed before a prescription moves into compounding and fulfillment. Your patient's medication is then shipped directly to them, with our team available to support your practice throughout the process.</p>
           <a href="#" onClick="{{ goPatient }}" style="display:inline-block;margin-top:18px;font-size:14px;font-weight:600;color:#A9DED6">Not a provider? Patient questions →</a>
           <div style="margin-top:34px;padding-top:26px;border-top:1px solid rgba(255,255,255,.2);display:flex;flex-direction:column;gap:14px">
-            <div style="font-size:15px;color:rgba(255,255,255,.9)">customersupport@strikerrx.com</div>
-            <div style="font-size:15px;color:rgba(255,255,255,.9)">832.437.8624</div>
+            <a href="mailto:contact@strikerrx.com" style="font-size:15px;color:rgba(255,255,255,.9)" style-hover="color:#A9DED6">contact@strikerrx.com</a>
+            <a href="tel:8324378624" style="font-size:15px;color:rgba(255,255,255,.9)" style-hover="color:#A9DED6">832.437.8624</a>
             <div style="font-size:14px;color:rgba(255,255,255,.6);line-height:1.6">Monday–Friday 9:30 AM–6:00 PM</div>
           </div>
         </div>
@@ -446,7 +490,7 @@
             <div style="padding:40px 0;text-align:center">
               <div style="width:52px;height:52px;border-radius:50%;background:#269389;color:#fff;display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 22px">✓</div>
               <h3 style="font-size:26px;font-weight:700;letter-spacing:-0.025em;margin:0 0 12px">Request received</h3>
-              <p style="font-size:16px;line-height:1.62;color:#606060;margin:0 auto 26px;max-width:400px;font-weight:300">A member of our pharmacy team will follow up within 24 hours. Most accounts are active within one business day.</p>
+              <p style="font-size:16px;line-height:1.62;color:#606060;margin:0 auto 26px;max-width:420px;font-weight:300">A member of our pharmacy team will follow up from contact@strikerrx.com or 832.437.8624. We strive to respond to provider inquiries within one business day, and to have new accounts active within 24 business hours once all required information is received.</p>
               <a href="#" onClick="{{ resetProvider }}" style="font-size:14px;font-weight:600;color:#269389;border-bottom:2px solid #269389;padding-bottom:4px">Submit another request</a>
             </div>
           </sc-if>
@@ -571,7 +615,8 @@
         <div>
           <div style="font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#1F3D68">For patients</div>
           <h2 style="font-size:40px;line-height:1.08;letter-spacing:-0.03em;font-weight:700;margin:16px 0 18px">Have a question?</h2>
-          <p style="font-size:17px;line-height:1.66;color:rgba(14,27,44,.76);margin:0;font-weight:300">StrikerRx compounds medications using valid prescriptions from licensed providers. We do not accept direct patient orders. Ask your provider to submit your prescription through their StrikerRx account.</p>
+          <p style="font-size:17px;line-height:1.66;color:rgba(14,27,44,.76);margin:0;font-weight:300">StrikerRx dispenses compounded medications only pursuant to valid patient-specific prescriptions from licensed providers. We do not accept direct patient orders. Ask your provider to submit your prescription through their StrikerRx account.</p>
+          <p style="font-size:15.5px;line-height:1.62;color:rgba(14,27,44,.72);margin:18px 0 0;font-weight:400">Do not use this form to submit prescriptions, report emergencies, or share detailed medical information. For questions about an existing prescription, call the pharmacy at 832.437.8624.</p>
           <a href="#" onClick="{{ goProvider }}" style="display:inline-block;margin-top:18px;font-size:14px;font-weight:600;color:#1F3D68">Are you a provider? Set up an account →</a>
         </div>
         <div class="form-card" style="background:#fff;padding:40px 44px 44px">
@@ -608,7 +653,7 @@
               <div class="span-2" style="grid-column:span 2;background:#FDF2F2;border-left:3px solid #C0392B;padding:12px 16px;font-size:14px;color:#8E2B21">{{ patientError }}</div>
             </sc-if>
             <div class="span-2" style="grid-column:span 2;display:flex;align-items:center;justify-content:space-between;gap:20px;margin-top:6px;flex-wrap:wrap">
-              <div style="font-size:13px;line-height:1.55;color:#909aa5;max-width:400px">We cannot accept prescription orders directly from patients.</div>
+              <div style="font-size:13px;line-height:1.55;color:#909aa5;max-width:400px">We cannot accept prescription orders from this form. For an existing order, call 832.437.8624.</div>
               <a href="#" onClick="{{ submitPatient }}" class="btn" style="background:#1F3D68;color:#fff;font-size:15px;font-weight:600;padding:15px 26px" style-hover="background:#269389;color:#fff">Send question</a>
             </div>
           </div>
@@ -637,7 +682,7 @@
     <div style="background:#F7F7F7">
       <div class="wrap" style="max-width:1240px;margin:0 auto;padding:88px 40px 76px">
         <h1 class="page-title" style="font-size:62px;line-height:1.02;letter-spacing:-0.04em;font-weight:700;margin:0">Insights</h1>
-        <p style="font-size:19px;line-height:1.6;color:#3a4654;margin:16px 0 28px;font-weight:300;max-width:720px">Blogs, newsletters, and regulatory updates from StrikerRx.</p>
+        <p style="font-size:19px;line-height:1.6;color:#3a4654;margin:16px 0 28px;font-weight:300;max-width:720px">Educational articles from the StrikerRx pharmacy team.</p>
         <p class="disclaimer" style="max-width:820px;margin:0">Compounded medications are prepared pursuant to a prescription for an individually identified patient. Compounded medications are not FDA approved, and the FDA does not verify their safety, effectiveness, or quality before they are marketed.</p>
       </div>
     </div>
@@ -666,7 +711,10 @@
       <div class="wrap" style="max-width:860px;margin:0 auto;padding:48px 40px 0">
         <a href="#" onClick="{{ goInsights }}" style="font-size:14px;font-weight:600;color:#269389">← All insights</a>
         <div style="font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#269389;margin:22px 0 0">{{ post.tag }}</div>
-        <h1 class="page-title" style="font-size:46px;line-height:1.08;letter-spacing:-0.035em;font-weight:700;margin:14px 0 28px">{{ post.title }}</h1>
+        <h1 class="page-title" style="font-size:46px;line-height:1.08;letter-spacing:-0.035em;font-weight:700;margin:14px 0 18px">{{ post.title }}</h1>
+        <p class="post-byline">Published {{ post.published }} · Last reviewed {{ post.reviewed }} · Next review {{ post.nextReview }}</p>
+        <p class="post-byline">Written by {{ post.by }}</p>
+        <p class="post-byline" style="margin-bottom:28px">Reviewed by {{ post.reviewedBy }}</p>
       </div>
     </div>
     <div style="background:#fff">
@@ -674,7 +722,7 @@
         <div class="post-hero photo-frame" style="height:360px;position:relative;margin-bottom:32px">
           <image-slot id="article-hero" shape="rounded" radius="20" src="{{ post.img }}" placeholder="Article image"></image-slot>
         </div>
-        <p class="disclaimer" style="margin:0 0 40px">Compounded medications are prepared pursuant to a prescription for an individually identified patient. Compounded medications are not FDA approved, and the FDA does not verify their safety, effectiveness, or quality before they are marketed.</p>
+        <p class="disclaimer" style="margin:0 0 40px">This article is for educational purposes and is not patient-specific medical advice. Treatment decisions belong with the licensed prescriber and the patient. Compounded medications are prepared pursuant to a prescription for an individually identified patient. Compounded medications are not FDA approved, and the FDA does not verify their safety, effectiveness, or quality before they are marketed.</p>
         <sc-for list="{{ post.blocks }}" as="b" hint-placeholder-count="6">
           <sc-if value="{{ b.isH }}" hint-placeholder-val="{{ true }}">
             <h2 style="font-size:28px;line-height:1.2;letter-spacing:-0.025em;font-weight:700;margin:36px 0 16px">{{ b.text }}</h2>
@@ -721,6 +769,13 @@
             </div>
           </sc-if>
         </sc-for>
+        <div class="post-refs">
+          <h2 style="font-size:22px;line-height:1.2;letter-spacing:-0.02em;font-weight:700;margin:0 0 16px">References</h2>
+          <sc-for list="{{ post.refs }}" as="r" hint-placeholder-count="3">
+            <a href="{{ r.url }}" target="_blank" rel="noopener noreferrer">{{ r.title }}</a>
+          </sc-for>
+          <p style="font-size:14px;line-height:1.6;color:#606060;margin:22px 0 0;font-weight:300">Last reviewed {{ post.reviewed }}. Scheduled for review {{ post.nextReview }}.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -734,7 +789,7 @@
         <div>
           <div style="font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#A9DED6">Careers at StrikerRx</div>
           <h1 style="font-size:60px;line-height:1.02;letter-spacing:-0.04em;font-weight:700;margin:18px 0 22px;text-wrap:pretty">Careful work, done by people who care.</h1>
-          <p style="font-size:19px;line-height:1.66;color:rgba(255,255,255,.78);margin:0;max-width:520px;font-weight:300">We are a growing 503A compounding pharmacy in Katy, Texas. The standards are high and the work is exacting — and the people on this team are the reason providers keep calling us back.</p>
+          <p style="font-size:19px;line-height:1.66;color:rgba(255,255,255,.78);margin:0;max-width:520px;font-weight:300">We are a growing Texas-licensed compounding pharmacy in Katy, Texas. The standards are high and the work is exacting — and the people on this team are the reason providers keep calling us back.</p>
           <div style="display:flex;gap:14px;margin-top:34px">
             <a href="#open-roles" class="btn" style="background:#269389;color:#fff;font-size:15px;font-weight:600;padding:17px 28px" style-hover="background:#34A697;color:#fff">See open roles</a>
           </div>
@@ -762,7 +817,7 @@
     <div style="background:#F7F7F7">
       <div class="wrap" style="max-width:1240px;margin:0 auto;padding:88px 40px">
         <h2 style="font-size:38px;line-height:1.08;letter-spacing:-0.03em;font-weight:700;margin:0 0 40px">What we hire for</h2>
-        <div class="cols-3" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#E3E7EC;border:1px solid #E3E7EC">
+        <div class="cols-3 values-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#E3E7EC;border:1px solid #E3E7EC">
           <sc-for list="{{ values }}" as="v" hint-placeholder-count="6">
             <div style="background:#fff;padding:34px 30px;min-height:190px">
               <h3 style="font-size:21px;line-height:1.2;letter-spacing:-0.02em;font-weight:600;margin:0 0 10px">{{ v.title }}</h3>
@@ -790,7 +845,7 @@
           </sc-for>
         </div>
         <div style="margin-top:40px;background:#F7F7F7;padding:30px 34px;display:flex;align-items:center;justify-content:space-between;gap:30px;flex-wrap:wrap">
-          <div style="font-size:16px;line-height:1.6;color:#3a4654;max-width:620px;font-weight:300">Do not see your role? We always want to hear from experienced compounding technicians and pharmacists. Send your résumé to <a href="mailto:customersupport@strikerrx.com">customersupport@strikerrx.com</a>.</div>
+          <div style="font-size:16px;line-height:1.6;color:#3a4654;max-width:620px;font-weight:300">Do not see your role? We always want to hear from experienced compounding technicians and pharmacists. Send your résumé to <a href="mailto:contact@strikerrx.com">contact@strikerrx.com</a>.</div>
         </div>
       </div>
     </div>
@@ -859,7 +914,7 @@
       <div class="cols-4" style="display:grid;grid-template-columns:1.3fr .8fr .8fr 1fr;gap:50px;padding-bottom:52px;border-bottom:1px solid rgba(255,255,255,.14)">
         <div>
           <img src="assets/logo-white.png" alt="StrikerRx" style="height:34px;width:auto" />
-          <p style="font-size:15px;line-height:1.6;color:rgba(255,255,255,.66);margin:20px 0 0;max-width:290px;font-weight:300">Licensed 503A sterile compounding pharmacy serving healthcare providers nationwide.</p>
+          <p style="font-size:15px;line-height:1.6;color:rgba(255,255,255,.66);margin:20px 0 0;max-width:290px;font-weight:300">Texas-licensed compounding pharmacy serving healthcare providers nationwide.</p>
         </div>
         <div style="display:flex;flex-direction:column;gap:12px">
           <div style="font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#A9DED6;margin-bottom:4px">Site</div>
@@ -872,7 +927,7 @@
           <div style="font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#A9DED6;margin-bottom:4px">Contact</div>
           <div style="font-size:15px;line-height:1.6;color:rgba(255,255,255,.8)">1330 Pin Oak Rd<br />Katy, Texas 77494</div>
           <a href="tel:8324378624" style="font-size:15px;color:rgba(255,255,255,.8)" style-hover="color:#A9DED6">832.437.8624</a>
-          <a href="mailto:customersupport@strikerrx.com" class="footer-email" style="font-size:15px;color:rgba(255,255,255,.8)" style-hover="color:#A9DED6">customersupport@strikerrx.com</a>
+          <a href="mailto:contact@strikerrx.com" class="footer-email" style="font-size:15px;color:rgba(255,255,255,.8)" style-hover="color:#A9DED6">contact@strikerrx.com</a>
         </div>
         <div style="display:flex;flex-direction:column;gap:12px">
           <div style="font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#A9DED6;margin-bottom:4px">Hours</div>
@@ -886,7 +941,7 @@
       </div>
       <div style="display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap;padding-top:26px">
         <p style="font-size:13px;line-height:1.66;color:rgba(255,255,255,.5);margin:0;max-width:720px;font-weight:300">Serving healthcare providers nationwide. Compounded medications are not FDA-approved. They are prepared for individual patients on valid prescriptions from licensed providers.</p>
-        <div style="font-size:13px;color:rgba(255,255,255,.5)">© 2025 Striker Pharmacy LLC. All rights reserved. &nbsp;|&nbsp; <a href="#" style="color:rgba(255,255,255,.5)">Privacy Policy</a></div>
+        <div style="font-size:13px;color:rgba(255,255,255,.5)">© {{ year }} Striker Pharmacy LLC. All rights reserved. &nbsp;|&nbsp; <a href="#" style="color:rgba(255,255,255,.5)">Privacy Policy</a></div>
       </div>
     </div>
   </div>
@@ -951,17 +1006,17 @@ class Component extends DCLogic {
       cat('Weight Management & Metabolic Health',
         'We prepare patient-specific weight management and metabolic health formulations when a commercially available treatment is not the right fit. Providers prescribe to clinical specifications; each preparation is made for an individual patient.'),
       cat('Recovery, Repair & Tissue Support',
-        'Sterile and non-sterile preparations for sports medicine, orthopedics, and regenerative health. Formulations are patient-specific, prepared to USP standards, and based on the provider\u2019s assessment and the patient\u2019s performance and healing goals.'),
+        'Sterile and non-sterile preparations for sports medicine, orthopedics, and regenerative health. Each formulation is patient-specific, based on the provider\u2019s assessment and the patient\u2019s performance and healing goals.'),
       cat('Longevity & Healthy Aging',
-        'Sterile and non-sterile preparations for anti-aging, preventative medicine, and regenerative health. Each formulation is patient-specific and prepared to USP standards from the provider\u2019s assessment and the patient\u2019s individual goals.'),
+        'Sterile and non-sterile preparations for anti-aging, preventative medicine, and regenerative health. Each formulation is patient-specific, based on the provider\u2019s assessment and the patient\u2019s individual goals.'),
       cat('Aesthetics & Skin Health',
-        'Sterile and non-sterile preparations for cosmetic dermatology, medical aesthetics, and integrative skin care. Each formulation is patient-specific and prepared to USP standards from the provider\u2019s assessment and the patient\u2019s skin care goals.'),
+        'Sterile and non-sterile preparations for cosmetic dermatology, medical aesthetics, and integrative skin care. Each formulation is patient-specific, based on the provider\u2019s assessment and the patient\u2019s skin care goals.'),
       cat('Cognitive & Mood Support',
-        'Sterile and non-sterile preparations for mental wellness. Each formulation is patient-specific and prepared to USP standards from the provider\u2019s assessment and the patient\u2019s wellness goals.'),
+        'Sterile and non-sterile preparations for mental wellness. Each formulation is patient-specific, based on the provider\u2019s assessment and the patient\u2019s wellness goals.'),
       cat('Sexual Wellness',
-        'Sterile and non-sterile preparations for sexual health, urology, and integrative medicine. Each formulation is patient-specific and prepared to USP standards from the provider\u2019s assessment and the patient\u2019s health goals.'),
+        'Sterile and non-sterile preparations for sexual health, urology, and integrative medicine. Each formulation is patient-specific, based on the provider\u2019s assessment and the patient\u2019s health goals.'),
       cat('Immune & Wellness Support',
-        'Sterile and non-sterile preparations for functional medicine and preventative care. Each formulation is patient-specific and prepared to USP standards from the provider\u2019s assessment and the patient\u2019s health needs.')
+        'Sterile and non-sterile preparations for functional medicine and preventative care. Each formulation is patient-specific, based on the provider\u2019s assessment and the patient\u2019s health needs.')
     ];
     const roles = [
       { title: 'Compounding Pharmacist (PharmD)', dept: 'Pharmacy', type: 'Full-time',
@@ -986,6 +1041,20 @@ class Component extends DCLogic {
         reqs: ['Experience in pharmacy, laboratory, or GMP quality assurance.', 'Familiarity with USP <797>, <795>, and <800>.', 'Comfortable holding a line on process, respectfully.', 'Strong writing — findings have to be readable.'] }
     ];
 
+    const articleMeta = {
+      by: 'the StrikerRx pharmacy team',
+      reviewedBy: 'a licensed compounding pharmacist',
+      published: 'August 31, 2026',
+      reviewed: 'September 2026',
+      nextReview: 'March 2027'
+    };
+    const fdaCompounding = { title: 'U.S. Food and Drug Administration. Compounding and the FDA: Questions and Answers.', url: 'https://www.fda.gov/drugs/human-drug-compounding/compounding-and-fda-questions-and-answers' };
+    const fda503A = { title: 'U.S. Food and Drug Administration. Section 503A of the Federal Food, Drug, and Cosmetic Act.', url: 'https://www.fda.gov/drugs/human-drug-compounding/section-503a-federal-food-drug-and-cosmetic-act' };
+    const fdaShortages = { title: 'U.S. Food and Drug Administration. Drug Shortages.', url: 'https://www.fda.gov/drugs/drug-safety-and-availability/drug-shortages' };
+    const usp797 = { title: 'United States Pharmacopeia. General Chapter <797> Pharmaceutical Compounding \u2014 Sterile Preparations.', url: 'https://www.usp.org/compounding/general-chapter-797' };
+    const usp795 = { title: 'United States Pharmacopeia. General Chapter <795> Pharmaceutical Compounding \u2014 Nonsterile Preparations.', url: 'https://www.usp.org/compounding/general-chapter-795' };
+    const tsbp = { title: 'Texas State Board of Pharmacy.', url: 'https://www.pharmacy.texas.gov/' };
+
     const articles = [
       {
         slot: 'post-1',
@@ -993,6 +1062,7 @@ class Component extends DCLogic {
         tag: 'Pharmacy',
         title: 'Compounding Pharmacy vs. Traditional Pharmacy: What Sets Us Apart',
         excerpt: 'Traditional pharmacies dispense commercially manufactured medications. Compounding pharmacies prepare patient-specific formulations when a commercial option does not meet an individual patient\u2019s needs.',
+        refs: [fdaCompounding, fda503A, tsbp],
         blocks: [
           { isP: true, text: 'Traditional pharmacies and compounding pharmacies both play valuable roles in patient care. The difference is that traditional pharmacies primarily dispense commercially manufactured medications, while compounding pharmacies prepare patient-specific formulations when an appropriate commercial option does not meet a patient\u2019s individual needs.' },
           { isP: true, text: 'At StrikerRx, we focus on customized medication solutions and collaborative support for the providers and patients we serve.' },
@@ -1038,6 +1108,7 @@ class Component extends DCLogic {
         tag: 'For providers',
         title: 'When Should a Provider Consider a Compounded Medication?',
         excerpt: 'A compounded medication may be appropriate when a patient\u2019s medical needs cannot be met by an FDA-approved, commercially available drug.',
+        refs: [fdaCompounding, fdaShortages, usp797, usp795, tsbp],
         blocks: [
           { isP: true, text: 'A compounded medication may be appropriate when a patient\u2019s medical needs cannot be met by an FDA-approved, commercially available drug. Compounding is intended to support individualized care, not to replace an appropriate FDA-approved medication that already meets the patient\u2019s needs.' },
           { isP: true, text: 'For providers, the decision should begin with the patient\u2019s clinical situation, the availability of suitable commercial options, and the reason a customized formulation is necessary.' },
@@ -1081,6 +1152,7 @@ class Component extends DCLogic {
         tag: 'For patients',
         title: 'What Patients Should Know About Customized Medications',
         excerpt: 'When a commercially available medication does not meet a patient\u2019s specific needs, a provider may prescribe a customized compounded medication.',
+        refs: [fdaCompounding, tsbp],
         blocks: [
           { isP: true, text: 'Most medications are manufactured in standard strengths, forms, and ingredient combinations. For many patients, those options work well. But when a commercially available medication does not meet a patient\u2019s specific needs, a provider may prescribe a customized compounded medication.' },
           { isP: true, text: 'Customized medications are prepared for an individual patient based on a valid prescription and the provider\u2019s clinical direction. They may help address needs related to dosage strength, dosage form, ingredient sensitivities, or other patient-specific considerations.' },
@@ -1150,9 +1222,9 @@ class Component extends DCLogic {
       goInsights: e => { e.preventDefault(); this.go('insights'); },
 
       trust: [
-        { label: '503A Licensed', dot: true },
-        { label: 'USP <797> Compliant', dot: true },
-        { label: 'FDA-Registered Ingredients', dot: true },
+        { label: 'Texas-Licensed \u00B7 503A', dot: true },
+        { label: 'USP <797> & <795>', dot: true },
+        { label: 'FDA-Registered Establishments', dot: true },
         { label: 'Providers Nationwide', dot: false }
       ],
 
@@ -1161,7 +1233,7 @@ class Component extends DCLogic {
       isPatient: st.audience === 'patient',
       noAudience: !st.audience,
       partnerIntro: st.audience === 'provider'
-        ? 'Set up a provider account or ask a clinical question. Our pharmacy team responds within 24 hours or less.'
+        ? 'Set up a provider account or ask a clinical question. We strive to respond to provider inquiries within one business day.'
         : st.audience === 'patient'
         ? 'Have a question about a prescription? Our customer service team responds within one business day.'
         : 'Choose whether you are a provider or a patient. The next step is different for each.',
@@ -1177,9 +1249,15 @@ class Component extends DCLogic {
       closeMenu: e => { e.preventDefault(); this.setState({ menuOpen: false }); },
 
       pillars: [
-        { num: '01', title: 'Sterile facility. Real standards.', body: 'Our compounding facility meets USP <797> standards. Every sterile preparation is produced in an ISO-classified cleanroom, tested, and released with documented quality review.' },
+        { num: '01', title: 'Sterile preparation with documented quality controls', body: 'Our compounding facility meets USP <797> standards. Every sterile preparation is produced in an ISO-classified cleanroom, tested, and released with documented quality review.' },
         { num: '02', title: 'Pharmacists, not ticket systems.', body: 'When you call or email, you reach our pharmacy team. Most clinical questions are answered on the same business day.' },
         { num: '03', title: 'Patient-specific.', body: 'Every prescription is dispensed specially for the individual patient according to the provider\u2019s exact directions.' }
+      ],
+      gettingSteps: [
+        { n: '01', title: 'Connect with our team', body: 'Submit the provider form. We follow up from contact@strikerrx.com or 832.437.8624.' },
+        { n: '02', title: 'Complete documentation', body: 'We guide you through the provider and practice information needed for verification and onboarding.' },
+        { n: '03', title: 'Prescribe', body: 'Once your account is approved, submit prescriptions by e-prescribing or fax.' },
+        { n: '04', title: 'We compound and fulfill', body: 'Our pharmacy team reviews each prescription, compounds the medication, and ships it to your patient.' }
       ],
 
       catNames: cats.map((c, i) => ({ name: c.name, go: e => { e.preventDefault(); this.setState({ openCat: i }); this.go('compound'); } })),
@@ -1196,13 +1274,13 @@ class Component extends DCLogic {
         { quote: '\u201c[Placeholder provider testimonial quote]\u201d', who: '\u2014 Dr. Name, Specialty, Practice' }
       ],
 
-      credentials: ['503A Licensed \u2014 Texas State Board of Pharmacy', 'USP <797> compliant sterile & non-sterile compounding', 'All active pharmaceutical ingredients sourced exclusively from FDA-registered suppliers', 'ISO-classified cleanroom'],
+      credentials: ['Texas-licensed compounding pharmacy operating under applicable section 503A requirements', 'USP <797> sterile compounding and USP <795> nonsterile compounding', 'Active pharmaceutical ingredients sourced from FDA-registered establishments', 'ISO-classified cleanroom'],
 
       values: [
-        { num: '01', title: 'Patient Safety First', body: 'Every decision we make starts with one question: is this safe for the patient receiving it?' },
-        { num: '02', title: 'Quality Without Compromise', body: 'We do not cut corners on ingredients, testing, or documentation. Not ever, for any reason.' },
+        { num: '01', title: 'Patient Safety First', body: 'Every decision starts with one question: is this safe for the patient receiving it?' },
+        { num: '02', title: 'Quality Without Compromise', body: 'We do not cut corners on ingredients, testing, or documentation \u2014 not for any reason.' },
         { num: '03', title: 'Service Excellence', body: 'Providers and patients deserve clear answers, fast turnaround, and a team that follows through.' },
-        { num: '04', title: 'Ownership & Accountability', body: 'We take responsibility for our work, including when something is not right, and we fix it.' },
+        { num: '04', title: 'Ownership & Accountability', body: 'We take responsibility for our work. When something is not right, we fix it.' },
         { num: '05', title: 'Team Before Self', body: 'Great patient care is a team outcome. Every role at StrikerRx contributes to what the patient receives.' },
         { num: '06', title: 'Continuous Improvement', body: 'We are building a better pharmacy every year: our processes, our facility, and our team.' }
       ],
@@ -1212,8 +1290,12 @@ class Component extends DCLogic {
         open: e => { e.preventDefault(); this.setState({ post: i, page: 'post', menuOpen: false, role: null }); window.scrollTo(0, 0); }
       })),
       post: activePost
-        ? { title: activePost.title, tag: activePost.tag, img: activePost.img, slot: activePost.slot, blocks: activePost.blocks }
-        : { title: '', tag: '', img: '', slot: 'article-hero', blocks: [] },
+        ? {
+            title: activePost.title, tag: activePost.tag, img: activePost.img, slot: activePost.slot, blocks: activePost.blocks,
+            by: articleMeta.by, reviewedBy: articleMeta.reviewedBy, published: articleMeta.published,
+            reviewed: articleMeta.reviewed, nextReview: articleMeta.nextReview, refs: activePost.refs || []
+          }
+        : { title: '', tag: '', img: '', slot: 'article-hero', blocks: [], by: '', reviewedBy: '', published: '', reviewed: '', nextReview: '', refs: [] },
 
       culture: [
         { title: 'What it is like here', body: 'Small team, real ownership. You will know the providers by name and see exactly how your work reaches a patient. Nobody here hides behind a process.' },
@@ -1246,7 +1328,8 @@ class Component extends DCLogic {
         'Compounded medications are not FDA-approved drugs. They are prepared for individual patients when a commercially available alternative is not appropriate.'
       ],
 
-      footerCreds: ['USP <797> Compliant', 'FDA-Registered Ingredient Sourcing', '503A Licensed', 'TSBP Licensed', 'ISO Class Cleanroom']
+      footerCreds: ['USP <797> & <795>', 'FDA-Registered Establishments', 'Texas State Board Licensed', 'ISO Class Cleanroom'],
+      year: new Date().getFullYear()
     };
   }
 }
