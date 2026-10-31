@@ -1,1 +1,7 @@
 *:Zone.Identifier
+__pycache__/
+*.pyc
+.venv/
+.env
+*.p8
+*.pem

@@ -1,0 +1,72 @@
+StrikerRx careers publishing — proposed HR setup and instructions
+Prepared October 16, 2026
+
+STATUS
+The five previous job listings and their detail pages have been removed from the
+live website. The careers page now says there are no open roles. The site does
+not currently have an HR editor. The workflow below is a proposed setup, not an
+activated account or integration.
+
+RECOMMENDED SETUP
+Use HR's existing recruiting system if it offers a hosted careers page or a jobs
+widget. Connect that page to StrikerRx once, then HR manages openings there.
+If HR does not have a system, Breezy HR supports both a hosted careers portal and
+an embeddable jobs list. Confirm the account, plan and HR access before setup.
+
+ONE-TIME SETUP — HR AND WEBSITE ADMINISTRATOR
+1. Confirm the recruiting system HR will own. The instructions below use Breezy.
+2. Have the company administrator create/configure the company account and give
+   the responsible HR staff Hiring Manager or Admin access as appropriate.
+3. In Breezy, open Settings > Company Settings > Career Site. Add approved company
+   branding and copy. Confirm which HR staff should receive and review applicants.
+4. Send the public career portal URL to the website administrator. The simplest
+   integration is a button on the StrikerRx careers page linking to that portal.
+   To show the jobs directly on StrikerRx, an Admin can instead open Career Site >
+   Embed Widget, choose grouping, and send its code for one-time installation.
+5. Verify a real approved opening, its application form, and the closed-role
+   behavior from the public StrikerRx website on desktop and mobile.
+6. Once the integration is confirmed, use the steps below for each role. No
+   website code changes or EC2 access should be needed for routine job updates.
+
+POST A ROLE — AFTER BREEZY SETUP
+1. Sign in with your HR account and open Positions/Pools.
+2. Choose + Add Position.
+3. Enter the title, employment type, location, and approved job description.
+4. Complete the application form, hiring team, and remaining position settings.
+   Check the career-site visibility and job-board settings before activating.
+5. Choose Save as Draft for review, or Activate Position when ready. Complete any
+   required internal approval. Active public roles appear on the career portal.
+6. Visit the public careers page from StrikerRx and verify the title, description,
+   location, and application link.
+
+EDIT A ROLE
+1. Open Positions/Pools and select the correct opening.
+2. Use the gear icon at the top right to open Position Settings.
+3. Update the content and save. Check the public posting again.
+
+REMOVE A ROLE FROM OPENINGS
+1. Open Positions/Pools and locate the role.
+2. Open its status menu (colored dot) and choose Closed.
+3. If prompted, select the closing reason. Review any candidate-disqualification
+   options separately; closing a listing does not require a new hiring decision.
+4. Check the public careers page to confirm the role is no longer an open posting.
+5. Keep its records for HR's normal retention process. Archived hides a position
+   internally; Delete permanently removes its data and is unnecessary for closing.
+
+APPLICATIONS
+Under this proposal, future role applications are collected in the recruiting
+system. Existing website applications already stored in Snowflake remain there;
+this setup does not migrate them. Agree who owns those historical applications
+before switching intake.
+
+OFFICIAL BREEZY INSTRUCTIONS
+Career portal setup:
+https://help.breezy.hr/en/articles/5578268-getting-started-customizing-your-career-portal
+Website widget:
+https://help.breezy.hr/en/articles/5376777-embedding-jobs-on-your-website
+Create, activate, and edit positions:
+https://help.breezy.hr/en/articles/5297448-creating-a-position
+Public career portal visibility:
+https://help.breezy.hr/en/articles/5297452-promoting-jobs-on-your-career-portal
+Close or archive positions:
+https://help.breezy.hr/en/articles/5617327-changing-the-status-of-a-position

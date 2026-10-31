@@ -1,0 +1,24 @@
+[Unit]
+Description=StrikerRx form submissions
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=strikerrx-forms
+Group=strikerrx-forms
+EnvironmentFile=/etc/strikerrx-forms.env
+Environment=HOME=/var/lib/strikerrx-forms
+Environment=PYTHONDONTWRITEBYTECODE=1
+WorkingDirectory=/opt/strikerrx-forms/current/server
+ExecStart=/opt/strikerrx-forms/venv/bin/gunicorn app:application --bind 127.0.0.1:8001 --workers 1 --threads 4 --timeout 90
+Restart=on-failure
+RestartSec=5
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/strikerrx-forms
+
+[Install]
+WantedBy=multi-user.target
