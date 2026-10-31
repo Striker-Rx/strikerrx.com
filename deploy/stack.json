@@ -1,0 +1,288 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "StrikerRx Apache static website on EC2 with an Elastic IP",
+  "Parameters": {
+    "ArtifactBucket": {
+      "Type": "String"
+    },
+    "ArtifactKey": {
+      "Type": "String"
+    },
+    "ImageId": {
+      "Type": "AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>",
+      "Default": "/aws/service/canonical/ubuntu/server/noble/stable/current/amd64/hvm/ebs-gp3/ami-id"
+    },
+    "FormSecretArn": {
+      "Type": "String",
+      "Default": ""
+    }
+  },
+  "Resources": {
+    "Vpc": {
+      "Type": "AWS::EC2::VPC",
+      "Properties": {
+        "CidrBlock": "10.73.0.0/24",
+        "EnableDnsSupport": true,
+        "EnableDnsHostnames": true
+      }
+    },
+    "Gateway": {
+      "Type": "AWS::EC2::InternetGateway",
+      "Properties": {}
+    },
+    "GatewayAttachment": {
+      "Type": "AWS::EC2::VPCGatewayAttachment",
+      "Properties": {
+        "VpcId": {
+          "Ref": "Vpc"
+        },
+        "InternetGatewayId": {
+          "Ref": "Gateway"
+        }
+      }
+    },
+    "Subnet": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "VpcId": {
+          "Ref": "Vpc"
+        },
+        "CidrBlock": "10.73.0.0/26",
+        "MapPublicIpOnLaunch": true
+      }
+    },
+    "RouteTable": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "Vpc"
+        }
+      }
+    },
+    "Route": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "RouteTable"
+        },
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": {
+          "Ref": "Gateway"
+        }
+      },
+      "DependsOn": "GatewayAttachment"
+    },
+    "SubnetRoute": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "SubnetId": {
+          "Ref": "Subnet"
+        },
+        "RouteTableId": {
+          "Ref": "RouteTable"
+        }
+      }
+    },
+    "SecurityGroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "StrikerRx public HTTP and HTTPS",
+        "VpcId": {
+          "Ref": "Vpc"
+        },
+        "SecurityGroupIngress": [
+          {
+            "IpProtocol": "tcp",
+            "FromPort": 80,
+            "ToPort": 80,
+            "CidrIp": "0.0.0.0/0"
+          },
+          {
+            "IpProtocol": "tcp",
+            "FromPort": 443,
+            "ToPort": 443,
+            "CidrIp": "0.0.0.0/0"
+          }
+        ]
+      }
+    },
+    "Role": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "ec2.amazonaws.com"
+              },
+              "Action": "sts:AssumeRole"
+            }
+          ]
+        },
+        "ManagedPolicyArns": [
+          "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+        ],
+        "Policies": [
+          {
+            "PolicyName": "ReadSiteArtifact",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": "s3:GetObject",
+                  "Resource": {
+                    "Fn::Sub": "arn:aws:s3:::${ArtifactBucket}/${ArtifactKey}"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "InstanceProfile": {
+      "Type": "AWS::IAM::InstanceProfile",
+      "Properties": {
+        "Roles": [
+          {
+            "Ref": "Role"
+          }
+        ]
+      }
+    },
+    "Server": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "ImageId": {
+          "Ref": "ImageId"
+        },
+        "InstanceType": "t3.micro",
+        "IamInstanceProfile": {
+          "Ref": "InstanceProfile"
+        },
+        "SubnetId": {
+          "Ref": "Subnet"
+        },
+        "SecurityGroupIds": [
+          {
+            "Ref": "SecurityGroup"
+          }
+        ],
+        "MetadataOptions": {
+          "HttpTokens": "required",
+          "HttpEndpoint": "enabled"
+        },
+        "BlockDeviceMappings": [
+          {
+            "DeviceName": "/dev/sda1",
+            "Ebs": {
+              "VolumeSize": 12,
+              "VolumeType": "gp3",
+              "Encrypted": true,
+              "DeleteOnTermination": true
+            }
+          }
+        ],
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "strikerrx.com"
+          },
+          {
+            "Key": "Project",
+            "Value": "StrikerRx"
+          }
+        ],
+        "UserData": {
+          "Fn::Base64": {
+            "Fn::Sub": "#!/bin/bash\nset -euxo pipefail\nexport DEBIAN_FRONTEND=noninteractive\napt-get update\napt-get install -y apache2 certbot python3-certbot-apache python3-boto3\ninstall -d -m 755 /var/www/strikerrx\n/usr/bin/python3 - <<'DOWNLOAD'\nimport boto3\nboto3.client('s3', region_name='us-east-1').download_file('${ArtifactBucket}', '${ArtifactKey}', '/tmp/site.tar.gz')\nDOWNLOAD\ntar --no-same-owner -xzf /tmp/site.tar.gz -C /var/www/strikerrx\nfind /var/www/strikerrx -type d -exec chmod 755 {} +\nfind /var/www/strikerrx -type f -exec chmod 644 {} +\ncat > /etc/apache2/sites-available/strikerrx.conf <<'APACHE'\n<VirtualHost *:80>\n    ServerName strikerrx.com\n    DocumentRoot /var/www/strikerrx\n    <Directory /var/www/strikerrx>\n        Options -Indexes\n        AllowOverride None\n        Require all granted\n    </Directory>\n    ErrorLog /var/log/apache2/strikerrx-error.log\n    CustomLog /var/log/apache2/strikerrx-access.log combined\n</VirtualHost>\nAPACHE\na2dissite 000-default\na2ensite strikerrx\napache2ctl configtest\nsystemctl enable --now apache2\nsystemctl reload apache2\nsystemctl enable --now certbot.timer\ntouch /var/lib/strikerrx-ready\n"
+          }
+        }
+      },
+      "DependsOn": [
+        "Route",
+        "SubnetRoute"
+      ]
+    },
+    "PublicIp": {
+      "Type": "AWS::EC2::EIP",
+      "Properties": {
+        "Domain": "vpc",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "strikerrx.com"
+          }
+        ]
+      },
+      "DependsOn": "GatewayAttachment"
+    },
+    "IpAssociation": {
+      "Type": "AWS::EC2::EIPAssociation",
+      "Properties": {
+        "AllocationId": {
+          "Fn::GetAtt": [
+            "PublicIp",
+            "AllocationId"
+          ]
+        },
+        "InstanceId": {
+          "Ref": "Server"
+        }
+      }
+    },
+    "FormSecretReadPolicy": {
+      "Type": "AWS::IAM::Policy",
+      "Condition": "HasFormSecret",
+      "Properties": {
+        "PolicyName": "ReadWebsiteSnowflakeSecret",
+        "Roles": [
+          {
+            "Ref": "Role"
+          }
+        ],
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": "secretsmanager:GetSecretValue",
+              "Resource": {
+                "Ref": "FormSecretArn"
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "Outputs": {
+    "InstanceId": {
+      "Value": {
+        "Ref": "Server"
+      }
+    },
+    "PublicIp": {
+      "Value": {
+        "Ref": "PublicIp"
+      }
+    }
+  },
+  "Conditions": {
+    "HasFormSecret": {
+      "Fn::Not": [
+        {
+          "Fn::Equals": [
+            {
+              "Ref": "FormSecretArn"
+            },
+            ""
+          ]
+        }
+      ]
+    }
+  }
+}

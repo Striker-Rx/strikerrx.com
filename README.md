@@ -2,6 +2,84 @@
 
 Website design prototype for StrikerRx, published as a static site on GitHub Pages.
 
+## EC2 form capture
+
+The EC2 deployment targets account `010133602250`, region `us-east-1`, and stack
+`strikerrx-web`. Homepage placeholder testimonials are temporarily disabled in
+`index.html`; restore the enclosing conditional only after replacing them with approved quotes.
+
+Provider, patient, and careers forms now POST to a same-origin `/api/forms/` endpoint.
+Success appears only after a database commit. These forms require the EC2 backend;
+GitHub Pages alone does not provide submission storage. The backend uses these tables
+in Snowflake account `HDSBMSO-NNC01524`, database `RAW_PRD`, schema `STRIKER_WEBSITE`:
+
+| Form | Table |
+| --- | --- |
+| Provider request | `WEBSITE_PROVIDER_REQUESTS` |
+| Patient question | `WEBSITE_PATIENT_QUESTIONS` |
+| Career application | `WEBSITE_CAREER_APPLICATIONS` |
+
+Each row has a generated `SUBMISSION_ID` and a server-recorded UTC `SUBMITTED_AT`
+(`TIMESTAMP_TZ`), plus the individual form fields. Careers include the selected role,
+note, and résumé filename, content type, and binary contents (PDF/DOC/DOCX, maximum 2 MB).
+Provider categories are stored as an array. The separate `strikerrx-snowflake-email` project sends new-row notifications through SMTP2GO using Snowflake streams, a queue, and a triggered task.
+
+To install on the existing server, first complete DNS and the Let's Encrypt certificate,
+then run from a terminal with AWS access:
+
+```sh
+python3 deploy/deploy-forms.py --profile strikerrx
+```
+
+The installer verifies the account and existing HTTPS site, initializes the schema through the separate `striker_admin` Snowflake CLI connection, and stores the dedicated service key from `~/.snowflake/keys/strikerrx_website_svc_key.p8` in Secrets Manager as `strikerrx/website/snowflake`. It adds `secretsmanager:GetSecretValue` for that exact secret ARN to the EC2 role through CloudFormation. It inspects a change set and refuses any unrelated infrastructure change. Secret contents are never included in the deployment archive, repository, frontend, or SSM command. Only a temporary owner-readable local file is used for secret upload.
+
+The backend runs as `strikerrx-forms` behind Apache on `127.0.0.1:8001`. It retrieves the key through the EC2 instance role and caches it in memory for five minutes. There is no EC2 private-key file. The runtime authenticates as `STRIKERRX_WEBSITE_SVC` with only the `STRIKERRX_WEBSITE_WRITER` role. That role has `USAGE` on `RAW_PRD`, `STRIKER_WEBSITE`, and `DEVELOPER_WH`, plus `INSERT` on the three intake tables. It has no `SELECT` privilege and no access to other schemas or databases. Secondary roles are disabled.
+
+Installation preserves existing tables and rows, tests all three inserts under the
+runtime role in a rolled-back transaction, verifies the HTTPS proxy, and only then
+publishes the new frontend. The old page is backed up under `/var/backups/strikerrx`.
+The script is safe to rerun after a partial installation. If schema creation fails,
+check that the Snowflake user can assume `ACCOUNTADMIN` for the one-time setup.
+
+To finish HTTPS if it has not already been configured:
+
+```sh
+python3 deploy/deploy.py certificate --profile strikerrx
+```
+
+For subsequent page-only changes after the backend is installed:
+
+```sh
+python3 deploy/update-page.py --profile strikerrx
+```
+
+API health: `https://strikerrx.com/api/health` verifies that the process and proxy are
+running; it does not query Snowflake. Database smoke check on EC2:
+
+```sh
+sudo sh -c 'set -a; . /etc/strikerrx-forms.env; set +a; /opt/strikerrx-forms/venv/bin/python /opt/strikerrx-forms/current/server/app.py --smoke'
+sudo journalctl -u strikerrx-forms
+```
+
+The public API validates required fields, email/NPI formats, payload size, résumé type,
+and origin. It binds SQL values, logs no submission payloads, and limits each IP to ten
+attempts per ten minutes. This in-memory limit assumes the configured single Gunicorn
+worker; it resets on process restart. Submission writes are synchronous; failed writes
+show an error and preserve the entered form. A retry after an ambiguous network failure
+can create a duplicate row, so use IDs/timestamps when reviewing submissions.
+
+Run local tests without cloud credentials:
+
+```sh
+python3 -m unittest discover -s tests -p 'test_*.py' -v
+node --test tests/forms.test.cjs
+```
+
+While DNS is pending, `python3 deploy/deploy-forms.py --prepare-only` prepares the
+secret, EC2 policy, tables, and API bound only to localhost. It does not publish the
+new frontend or enable the Apache API proxy. Run again without that flag once HTTPS
+is ready to complete activation.
+
 ## Source
 
 This site is a Claude Design canvas exported to a static page.
